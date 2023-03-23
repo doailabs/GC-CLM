@@ -11,28 +11,78 @@ document.addEventListener('DOMContentLoaded', function () {
     client.setEnvironment('mypurecloud.com');
     client.setPersistSettings(true, 'GenesysCloudApp');
 
+    const downloadListsButton = document.getElementById('downloadListsButton');
+    downloadListsButton.addEventListener('click', downloadContactLists);
+
+    const contactListsTableBody = document.getElementById('contactListsTable').getElementsByTagName('tbody')[0];
+
     function displayContactLists(contactLists) {
-        const contactListsContainer = document.getElementById('contactLists');
+        contactListsTableBody.innerHTML = '';
 
         contactLists.forEach(list => {
-            const listItem = document.createElement('p');
-            listItem.textContent = `${list.name} - ${list.id}`;
-            contactListsContainer.appendChild(listItem);
+            const row = document.createElement('tr');
+
+            const idCell = document.createElement('td');
+            idCell.textContent = list.id;
+            row.appendChild(idCell);
+
+            const nameCell = document.createElement('td');
+            nameCell.textContent = list.name;
+            row.appendChild(nameCell);
+
+            const createdByCell = document.createElement('td');
+            createdByCell.textContent = list.createdBy.name;
+            row.appendChild(createdByCell);
+
+            const createdDateCell = document.createElement('td');
+            createdDateCell.textContent = new Date(list.dateCreated).toLocaleDateString();
+            row.appendChild(createdDateCell);
+
+            const modifiedDateCell = document.createElement('td');
+            modifiedDateCell.textContent = new Date(list.dateModified).toLocaleDateString();
+            row.appendChild(modifiedDateCell);
+
+            contactListsTableBody.appendChild(row);
         });
     }
 
-    function fetchContactLists() {
+    function downloadContactLists() {
         const apiInstance = new platformClient.OutboundApi();
 
         apiInstance.getOutboundContactlists()
             .then(response => {
                 const contactLists = response.entities;
-                displayContactLists(contactLists);
+                downloadCsv(contactLists);
             })
-            .catch(error => console.error('Error al cargar las contact lists:', error));
+            .catch(error => console.error('Error al descargar las contact lists:', error));
+    }
+
+    function downloadCsv(contactLists) {
+        const csvContent = "data:text/csv;charset=utf-8,"
+            + "ID,Nombre,Creado por,Fecha de Creación,Fecha de Modificación\n";
+
+        contactLists.forEach(list => {
+            csvContent += `${list.id},"${list.name}",${list.createdBy.name},${new Date(list.dateCreated).toLocaleDateString()},${new Date(list.dateModified).toLocaleDateString()}\n`;
+        });
+
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "contactLists.csv");
+        document.body.appendChild(link);
+        link.click();
     }
 
     client.loginImplicitGrant(clientId, redirectUri)
-        .then(fetchContactLists)
+        .then(() => {
+            const apiInstance = new platformClient.OutboundApi();
+
+            apiInstance.getOutboundContactlists()
+                .then(response => {
+                    const contactLists = response.entities;
+                    displayContactLists(contactLists);
+                })
+                .catch(error => console.error('Error al cargar las contact lists:', error));
+        })
         .catch(error => console.error('Error al autenticar:', error));
 });
