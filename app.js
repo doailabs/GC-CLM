@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const client = platformClient.ApiClient.instance;
     clientApp.init(client);
 
-    // Reemplaza YOUR_CLIENT_ID con tu Client ID
     const clientId = '479255ae-cf23-4c2e-9209-555370df882c';
     const redirectUri = `${window.location.protocol}//${window.location.host}`;
 
