@@ -23,14 +23,35 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function displayContactLists(contactLists) {
         console.log('displayContactLists', contactLists);
-        const contactListsContainer = document.getElementById('contactLists');
+        const contactListsTableBody = document.querySelector('#contactListsTable tbody');
 
         contactLists.forEach(list => {
-            const listItem = document.createElement('p');
-            listItem.textContent = `${list.name} - ${list.id}`;
-            contactListsContainer.appendChild(listItem);
+            const row = document.createElement('tr');
+
+            const idCell = document.createElement('td');
+            idCell.textContent = list.id;
+            row.appendChild(idCell);
+
+            const nameCell = document.createElement('td');
+            nameCell.textContent = list.name;
+            row.appendChild(nameCell);
+
+            const createdByCell = document.createElement('td');
+            createdByCell.textContent = list.createdBy;
+            row.appendChild(createdByCell);
+
+            const dateCreatedCell = document.createElement('td');
+            dateCreatedCell.textContent = new Date(list.dateCreated).toLocaleString();
+            row.appendChild(dateCreatedCell);
+
+            const dateModifiedCell = document.createElement('td');
+            dateModifiedCell.textContent = new Date(list.dateModified).toLocaleString();
+            row.appendChild(dateModifiedCell);
+
+            contactListsTableBody.appendChild(row);
         });
     }
+
 
     function fetchContactLists() {
         console.log('fetchContactLists');
