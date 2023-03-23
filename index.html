@@ -28,9 +28,11 @@
     </table>
     <script src="startGCSDKs.js"></script>
     <script>
-        // Invocar startGCSDKs al cargar la página
         const clientId = '479255ae-cf23-4c2e-9209-555370df882c';
-        startGCSDKs(clientId);
+        startGCSDKs(clientId).then(platformClient => {
+            // Llama a fetchContactLists con platformClient
+            fetchContactLists(platformClient);
+        });
     </script>
     <script src="getContactLists.js"></script>
 </body>
