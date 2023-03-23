@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
     console.log('DOMContentLoaded');
 
-    const platformClient = require("purecloud-platform-client-v2");
+    const platformClient = require('platformClient');
     console.log('platformClient', platformClient);
 
     const clientApp = require('purecloud-client-app-sdk');
