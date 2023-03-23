@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const clientId = '479255ae-cf23-4c2e-9209-555370df882c';
     const redirectUri = `${window.location.protocol}//${window.location.host}`;
 
-    client.setEnvironment('mypurecloud.com');
+    client.setEnvironment('mypurecloud.de');
     client.setPersistSettings(true, 'GenesysCloudApp');
 
     const downloadListsButton = document.getElementById('downloadListsButton');
