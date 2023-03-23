@@ -60,20 +60,17 @@ function startGCSDKs(clientId) {
       client.setEnvironment(environment);
 
       return client.loginImplicitGrant(clientId, redirectUri)
-
-
-        .then(data =>  usersApi.getUsersMe())
-        .then(data => {
-          userDetails = data;
-
-          myClientApp.alerting.showToastPopup(
-            `Hi ${userDetails.name}`, 
-            'Implicit grant login successful');
-        })
-        .catch(err => console.log(err))
-        .finally(() => platformClient);
-
-    }
+          .then(data => usersApi.getUsersMe())
+          .then(data => {
+              userDetails = data;
+              myClientApp.alerting.showToastPopup(
+                  `Hi ${userDetails.name}`,
+                  'Implicit grant login successful'
+              );
+              return platformClient; // Retorna platformClient aquí
+          })
+          .catch(err => console.log(err));
+  }
 
     /**
      * Assign the language and environment for the app first through
