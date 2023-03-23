@@ -9,7 +9,7 @@ function displayContactLists(contactLists) {
     });
 }
 
-function fetchContactLists() {
+function fetchContactLists(platformClient) {
     console.log('fetchContactLists');
     const apiInstance = new platformClient.OutboundApi();
 
@@ -22,4 +22,4 @@ function fetchContactLists() {
         .catch(error => console.error('Error al cargar las contact lists:', error));
 }
 
-fetchContactLists();
+// No llames a fetchContactLists aquí, ya que ahora se llama desde index.html
