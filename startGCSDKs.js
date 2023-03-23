@@ -65,11 +65,10 @@ function startGCSDKs(clientId) {
               userDetails = data;
               myClientApp.alerting.showToastPopup(
                   `Hi ${userDetails.name}`,
-                  'Implicit grant login successful'
-              );
-              return platformClient; // Retorna platformClient aquí
+                  'Implicit grant login successful');
           })
-          .catch(err => console.log(err));
+          .catch(err => console.log(err))
+          .finally(() => platformClient);
   }
 
     /**
