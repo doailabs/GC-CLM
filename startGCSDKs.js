@@ -70,7 +70,8 @@ function startGCSDKs(clientId) {
             `Hi ${userDetails.name}`, 
             'Implicit grant login successful');
         })
-        .catch(err => console.log(err));
+        .catch(err => console.log(err))
+        .finally(() => platformClient);
 
     }
 
