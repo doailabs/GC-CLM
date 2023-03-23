@@ -21,5 +21,3 @@ function fetchContactLists(platformClient) {
         })
         .catch(error => console.error('Error al cargar las contact lists:', error));
 }
-
-// No llames a fetchContactLists aquí, ya que ahora se llama desde index.html
