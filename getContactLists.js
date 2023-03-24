@@ -34,7 +34,7 @@ function fetchContactLists(platformClient, pageNumber = 1) {
     const apiInstance = new platformClient.OutboundApi();
     const pageSize = 10;
 
-    apiInstance.getOutboundContactlists(pageSize, pageNumber)
+    apiInstance.getOutboundContactlists(pageSize, pageNumber - 1)
       .then(response => {
         console.log('getOutboundContactlists response', response);
         const contactLists = response.entities;
