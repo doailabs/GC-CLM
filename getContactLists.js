@@ -2,6 +2,7 @@ let currentPage = 1;
 let platformClientInstance;
 
 function fetchContactLists(platformClient, pageNumber = 1) {
+  currentPage = pageNumber;
   platformClientInstance = platformClient;
   console.log('getContactLists called');
 
@@ -38,8 +39,7 @@ function fetchContactLists(platformClient, pageNumber = 1) {
         console.log('getOutboundContactlists response', response);
         const contactLists = response.entities;
         const totalPages = response.pageCount;
-        currentPage = pageNumber; // Mueve la actualización de currentPage aquí
-        displayContactLists(contactLists, pageNumber, pageSize);
+        displayContactLists(contactLists);
         updatePaginationButtons(totalPages);
       })
       .catch(error => console.error('Error al cargar las contact lists:', error));
