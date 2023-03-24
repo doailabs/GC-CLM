@@ -6,12 +6,14 @@ function fetchContactLists(platformClient, pageNumber = 1) {
   platformClientInstance = platformClient;
   console.log('getContactLists called');
 
-  function displayContactLists(contactLists) {
+  function displayContactLists(contactLists, pageNumber) {
     console.log('displayContactLists', contactLists);
     const contactListsTableBody = document.querySelector('#contactListsTable tbody');
     contactListsTableBody.innerHTML = '';
 
-    contactLists.forEach(list => {
+    const startIndex = (pageNumber - 1) * pageSize;
+
+    contactLists.slice(startIndex, startIndex + pageSize).forEach(list => {
       const row = document.createElement('tr');
       const idCell = document.createElement('td');
       idCell.textContent = list.id;
@@ -29,6 +31,7 @@ function fetchContactLists(platformClient, pageNumber = 1) {
     });
   }
 
+
   function fetchContactListsFromApi(pageNumber) {
     console.log('fetchContactListsFromApi');
     const apiInstance = new platformClient.OutboundApi();
@@ -39,7 +42,7 @@ function fetchContactLists(platformClient, pageNumber = 1) {
         console.log('getOutboundContactlists response', response);
         const contactLists = response.entities;
         const totalPages = response.pageCount;
-        displayContactLists(contactLists);
+        displayContactLists(contactLists, pageNumber);
         updatePaginationButtons(totalPages);
       })
       .catch(error => console.error('Error al cargar las contact lists:', error));
