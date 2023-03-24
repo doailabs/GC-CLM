@@ -1,4 +1,6 @@
+let currentPage = 1;
 function fetchContactLists(platformClient, pageNumber = 1) {
+  currentPage = pageNumber;
   console.log('getContactLists called');
 
   function displayContactLists(contactLists) {
@@ -35,6 +37,7 @@ function fetchContactLists(platformClient, pageNumber = 1) {
               const contactLists = response.entities;
               const totalPages = response.pageCount;
               displayContactLists(contactLists);
+              updatePaginationButtons(totalPages);
 
               if (totalPages > 1) {
                   const paginationContainer = document.querySelector('#pagination');
@@ -56,3 +59,24 @@ function fetchContactLists(platformClient, pageNumber = 1) {
 
   fetchContactListsFromApi(pageNumber);
 }
+
+function updatePaginationButtons(totalPages) {
+  const previousPageBtn = document.querySelector('#previousPageBtn');
+  const nextPageBtn = document.querySelector('#nextPageBtn');
+
+  if (currentPage === 1) {
+    previousPageBtn.disabled = true;
+  } else {
+    previousPageBtn.disabled = false;
+  }
+
+  if (currentPage === totalPages) {
+    nextPageBtn.disabled = true;
+  } else {
+    nextPageBtn.disabled = false;
+  }
+
+  previousPageBtn.onclick = () => fetchContactLists(platformClient, currentPage - 1);
+  nextPageBtn.onclick = () => fetchContactLists(platformClient, currentPage + 1);
+}
+
