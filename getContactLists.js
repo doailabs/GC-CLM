@@ -47,8 +47,13 @@ function displayContactLists(contactLists) {
 
 const clientId = '479255ae-cf23-4c2e-9209-555370df882c';
 
-document.querySelector('#showContactLists').addEventListener('click', () => {
-    startGCSDKs(clientId).then(platformClient => {
-        fetchContactLists(platformClient);
-    });
+document.addEventListener('DOMContentLoaded', function () {
+    const showContactListButton = document.getElementById('showContactListButton');
+    if (showContactListButton) {
+        showContactListButton.addEventListener('click', function () {
+            startGCSDKs(clientId).then(platformClient => {
+                fetchContactLists(platformClient);
+            });
+        });
+    }
 });
