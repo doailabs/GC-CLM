@@ -32,9 +32,18 @@
     </table>
     <script>
         const clientId = '479255ae-cf23-4c2e-9209-555370df882c';
-        startGCSDKs(clientId).then(platformClient => {
-            addShowContactListsButtonListener(platformClient);
-        });
+
+        function addShowContactListsButtonListener(platformClient) {
+            const showContactListsButton = document.getElementById('showContactLists');
+            showContactListsButton.addEventListener('click', function() {
+                fetchContactLists(platformClient);
+            });
+        }
+
+        startGCSDKs(clientId)
+            .then(platformClient => {
+                addShowContactListsButtonListener(platformClient);
+            });
     </script>
 </body>
 </html>
