@@ -1,4 +1,5 @@
 let currentPage = 1;
+
 function fetchContactLists(platformClient, pageNumber = 1) {
   currentPage = pageNumber;
   console.log('getContactLists called');
@@ -27,34 +28,19 @@ function fetchContactLists(platformClient, pageNumber = 1) {
   }
 
   function fetchContactListsFromApi(pageNumber) {
-      console.log('fetchContactListsFromApi');
-      const apiInstance = new platformClient.OutboundApi();
-      const pageSize = 10;
+    console.log('fetchContactListsFromApi');
+    const apiInstance = new platformClient.OutboundApi();
+    const pageSize = 10;
 
-      apiInstance.getOutboundContactlists(pageSize, pageNumber)
-          .then(response => {
-              console.log('getOutboundContactlists response', response);
-              const contactLists = response.entities;
-              const totalPages = response.pageCount;
-              displayContactLists(contactLists);
-              updatePaginationButtons(totalPages);
-
-              if (totalPages > 1) {
-                  const paginationContainer = document.querySelector('#pagination');
-                  paginationContainer.innerHTML = '';
-
-                  for (let i = 1; i <= totalPages; i++) {
-                      const pageButton = document.createElement('button');
-                      pageButton.textContent = i;
-                      pageButton.addEventListener('click', () => {
-                          fetchContactLists(platformClient, i);
-                      });
-
-                      paginationContainer.appendChild(pageButton);
-                  }
-              }
-          })
-          .catch(error => console.error('Error al cargar las contact lists:', error));
+    apiInstance.getOutboundContactlists(pageSize, pageNumber)
+      .then(response => {
+        console.log('getOutboundContactlists response', response);
+        const contactLists = response.entities;
+        const totalPages = response.pageCount;
+        displayContactLists(contactLists);
+        updatePaginationButtons(totalPages);
+      })
+      .catch(error => console.error('Error al cargar las contact lists:', error));
   }
 
   fetchContactListsFromApi(pageNumber);
@@ -79,4 +65,3 @@ function updatePaginationButtons(totalPages) {
   previousPageBtn.onclick = () => fetchContactLists(platformClient, currentPage - 1);
   nextPageBtn.onclick = () => fetchContactLists(platformClient, currentPage + 1);
 }
-
