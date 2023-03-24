@@ -32,9 +32,14 @@ function fetchContactLists(platformClient, pageNumber = 1) {
   function fetchContactListsFromApi(pageNumber) {
     console.log('fetchContactListsFromApi');
     const apiInstance = new platformClient.OutboundApi();
-    const pageSize = 25
+    const pageSize = 25;
 
-    apiInstance.getOutboundContactlists(pageSize, pageNumber - 1)
+    const opts = {
+      "pageSize": pageSize,
+      "pageNumber": pageNumber
+    };
+
+    apiInstance.getOutboundContactlists(opts)
       .then(response => {
         console.log('getOutboundContactlists response', response);
         const contactLists = response.entities;
@@ -45,8 +50,6 @@ function fetchContactLists(platformClient, pageNumber = 1) {
       .catch(error => console.error('Error al cargar las contact lists:', error));
   }
 
-  fetchContactListsFromApi(pageNumber);
-}
 
 function updatePaginationButtons(totalPages) {
   const previousPageBtn = document.querySelector('#previousPageBtn');
