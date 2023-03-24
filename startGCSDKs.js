@@ -1,4 +1,5 @@
 function startGCSDKs(clientId) {
+  const console = window.console;
   return new Promise((resolve, reject) => {
     const appName = 'app name';
     const qParamLanguage = 'language';
