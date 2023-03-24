@@ -23,7 +23,7 @@ function fetchContactLists(platformClient) {
     });
   }
 
-  function fetchContactListsFromApi(pageNumber) {
+  function fetchContactListsFromApi(pageNumber = 1) {
       console.log('fetchContactListsFromApi');
       const apiInstance = new platformClient.OutboundApi();
       const pageSize = 10;
