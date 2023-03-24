@@ -1,7 +1,9 @@
 let currentPage = 1;
+let platformClientInstance;
 
 function fetchContactLists(platformClient, pageNumber = 1) {
   currentPage = pageNumber;
+  platformClientInstance = platformClient;
   console.log('getContactLists called');
 
   function displayContactLists(contactLists) {
@@ -62,6 +64,6 @@ function updatePaginationButtons(totalPages) {
     nextPageBtn.disabled = false;
   }
 
-  previousPageBtn.onclick = () => fetchContactLists(platformClient, currentPage - 1);
-  nextPageBtn.onclick = () => fetchContactLists(platformClient, currentPage + 1);
+  previousPageBtn.onclick = () => fetchContactLists(platformClientInstance, currentPage - 1);
+  nextPageBtn.onclick = () => fetchContactLists(platformClientInstance, currentPage + 1);
 }
