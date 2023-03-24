@@ -11,9 +11,7 @@ function fetchContactLists(platformClient, pageNumber = 1) {
     const contactListsTableBody = document.querySelector('#contactListsTable tbody');
     contactListsTableBody.innerHTML = '';
 
-    const startIndex = (pageNumber - 1) * pageSize;
-
-    contactLists.slice(startIndex, startIndex + pageSize).forEach(list => {
+    contactLists.forEach(list => {
       const row = document.createElement('tr');
       const idCell = document.createElement('td');
       idCell.textContent = list.id;
@@ -37,7 +35,7 @@ function fetchContactLists(platformClient, pageNumber = 1) {
     const apiInstance = new platformClient.OutboundApi();
     const pageSize = 25
 
-    apiInstance.getOutboundContactlists(pageSize, pageNumber - 1)
+    apiInstance.getOutboundContactlists(pageSize, pageNumber)
       .then(response => {
         console.log('getOutboundContactlists response', response);
         const contactLists = response.entities;
