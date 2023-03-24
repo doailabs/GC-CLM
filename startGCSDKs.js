@@ -14,24 +14,6 @@ function startGCSDKs(clientId) {
       console.log(`environment after addEventListener: ${environment}`);
       console.log(`language after addEventListener: ${language}`);
 
-      setupGenesysClients(redirectUri, environment)
-        .then(() => {
-          document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('span_environment').innerText = environment;
-            document.getElementById('span_language').innerText = language;
-            document.getElementById('span_name').innerText = userDetails.name;
-          });
-
-          console.log('Finished setup.');
-          resolve(platformClient); // Agrega esta línea para resolver la promesa con platformClient
-        })
-        .catch((err) => {
-          console.error("Error during setup:", err);
-          reject(err); // Agrega esta línea para rechazar la promesa con el error
-        });
-    });
-
-    function setupGenesysClients(redirectUri, environment) {
       const platformClient = require('platformClient');
       const client = platformClient.ApiClient.instance;
       document.addEventListener('DOMContentLoaded', function () {
@@ -54,7 +36,7 @@ function startGCSDKs(clientId) {
       client.setPersistSettings(true, appName);
       client.setEnvironment(environment);
 
-      return client.loginImplicitGrant(clientId, redirectUri)
+      client.loginImplicitGrant(clientId, redirectUri)
         .then(data => usersApi.getUsersMe())
         .then(data => {
           userDetails = data;
@@ -63,8 +45,21 @@ function startGCSDKs(clientId) {
             `Hi ${userDetails.name}`,
             'Implicit grant login successful');
         })
-        .catch(err => console.log(err));
-    }
+        .then(() => {
+          document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('span_environment').innerText = environment;
+            document.getElementById('span_language').innerText = language;
+            document.getElementById('span_name').innerText = userDetails.name;
+          });
+
+          console.log('Finished setup.');
+          resolve(platformClient);
+        })
+        .catch((err) => {
+          console.error("Error during setup:", err);
+          reject(err);
+        });
+    });
 
     function assignConfiguration() {
       let url = new URL(window.location);
