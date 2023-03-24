@@ -1,9 +1,10 @@
-function fetchContactLists(platformClient) {
+function fetchContactLists(platformClient, pageNumber = 1) {
   console.log('getContactLists called');
 
   function displayContactLists(contactLists) {
     console.log('displayContactLists', contactLists);
     const contactListsTableBody = document.querySelector('#contactListsTable tbody');
+    contactListsTableBody.innerHTML = '';
 
     contactLists.forEach(list => {
       const row = document.createElement('tr');
@@ -23,7 +24,7 @@ function fetchContactLists(platformClient) {
     });
   }
 
-  function fetchContactListsFromApi(pageNumber = 1) {
+  function fetchContactListsFromApi(pageNumber) {
       console.log('fetchContactListsFromApi');
       const apiInstance = new platformClient.OutboundApi();
       const pageSize = 10;
@@ -43,7 +44,7 @@ function fetchContactLists(platformClient) {
                       const pageButton = document.createElement('button');
                       pageButton.textContent = i;
                       pageButton.addEventListener('click', () => {
-                          fetchContactListsFromApi(i);
+                          fetchContactLists(platformClient, i);
                       });
 
                       paginationContainer.appendChild(pageButton);
@@ -52,5 +53,6 @@ function fetchContactLists(platformClient) {
           })
           .catch(error => console.error('Error al cargar las contact lists:', error));
   }
-  fetchContactListsFromApi();
+
+  fetchContactListsFromApi(pageNumber);
 }
