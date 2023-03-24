@@ -12,11 +12,11 @@
 </head>
 <body>
     <h1>Contact List Management</h1>
+    <button id="showContactLists">Mostrar contact lists</button>
     <div id="contactLists">
         <!-- Aquí se mostrarán las contact lists -->
     </div>
-    <button id="showContactLists" style="display: none">Mostrar contact lists</button>
-    <table id="contactListsTable" style="display: none">
+    <table id="contactListsTable">
         <thead>
             <tr>
                 <th>ID</th>
@@ -33,10 +33,7 @@
     <script>
         const clientId = '479255ae-cf23-4c2e-9209-555370df882c';
         startGCSDKs(clientId).then(platformClient => {
-            document.getElementById("showContactLists").style.display = "block";
-            document.getElementById("showContactLists").addEventListener("click", () => {
-                getContactLists(platformClient, clientId);
-            });
+            addShowContactListsButtonListener(platformClient);
         });
     </script>
 </body>
