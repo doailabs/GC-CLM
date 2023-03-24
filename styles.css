@@ -1,61 +1,62 @@
-/* Reset some default styles */
-body, h1, p {
+/* styles.css */
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    background-color: #f4f4f4;
-}
-
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    font-family: 'Helvetica', sans-serif;
+    background-color: #f8f8f8;
+    color: #333;
+    line-height: 1.5;
 }
 
 h1 {
-    font-size: 2rem;
-    color: #333;
-    margin-bottom: 16px;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
     text-align: center;
+    padding: 2rem 0;
+    background-color: #333;
+    color: #fff;
 }
 
 button {
-    display: inline-block;
+    display: block;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    margin: 1rem auto;
     background-color: #333;
     color: #fff;
-    font-size: 1rem;
-    padding: 10px 20px;
     border: none;
-    border-radius: 5px;
     cursor: pointer;
-    margin-bottom: 20px;
+    transition: all 0.3s;
 }
 
 button:hover {
-    background-color: #555;
+    background-color: #444;
 }
 
 table {
-    width: 100%;
+    width: 80%;
+    margin: 2rem auto;
     border-collapse: collapse;
 }
 
-table, th, td {
-    border: 1px solid #ccc;
+table thead {
+    background-color: #333;
+    color: #fff;
 }
 
-th, td {
-    text-align: left;
-    padding: 8px;
+table th, table td {
+    padding: 0.5rem 1rem;
+    border: 1px solid #ddd;
 }
 
-th {
-    background-color: #f2f2f2;
+table tbody tr:nth-child(odd) {
+    background-color: #eee;
+}
+
+table tbody tr:hover {
+    background-color: #ddd;
 }
