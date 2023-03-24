@@ -6,7 +6,7 @@ function fetchContactLists(platformClient, pageNumber = 1) {
   platformClientInstance = platformClient;
   console.log('getContactLists called');
 
-  function displayContactLists(contactLists, pageNumber, pageSize) {
+  function displayContactLists(contactLists) {
     console.log('displayContactLists', contactLists);
     const contactListsTableBody = document.querySelector('#contactListsTable tbody');
     contactListsTableBody.innerHTML = '';
