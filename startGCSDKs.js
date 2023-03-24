@@ -43,8 +43,8 @@ function startGCSDKs(clientId) {
           userDetails = data;
 
           myClientApp.alerting.showToastPopup(
-            `Hi ${userDetails.name}`,
-            'Implicit grant login successful');
+            `Hola ${userDetails.name}`,
+            'bienvenido a contact list management');
         })
         .then(() => {
           document.addEventListener('DOMContentLoaded', () => {
