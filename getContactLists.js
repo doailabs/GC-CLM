@@ -1,24 +1,26 @@
+function addShowContactListsButtonListener(platformClient) {
+    const showContactListsBtn = document.getElementById('showContactListsBtn');
+
+    showContactListsBtn.addEventListener('click', function () {
+        fetchContactLists(platformClient);
+    });
+}
+
 function fetchContactLists(platformClient) {
-    console.log('Inicio de fetchContactLists'); // Agregado
+    console.log('Starting fetchContactLists');
+    const apiInstance = new platformClient.OutboundApi();
 
-    const outboundApi = new platformClient.OutboundApi();
-
-    outboundApi.getOutboundContactlists()
+    apiInstance.getOutboundContactlists()
         .then(response => {
-            console.log('Respuesta exitosa de getOutboundContactlists'); // Agregado
-            console.log('Response:', response); // Agregado
+            console.log('getOutboundContactlists response', response);
             const contactLists = response.entities;
             displayContactLists(contactLists);
         })
-        .catch(error => {
-            console.error('Error al cargar las contact lists:', error);
-        });
+        .catch(error => console.error('Error al cargar las contact lists:', error));
 }
 
 function displayContactLists(contactLists) {
-    console.log('Inicio de displayContactLists'); // Agregado
-    console.log('ContactLists:', contactLists); // Agregado
-
+    console.log('displayContactLists', contactLists);
     const contactListsContainer = document.getElementById('contactLists');
 
     contactLists.forEach(list => {
@@ -27,3 +29,10 @@ function displayContactLists(contactLists) {
         contactListsContainer.appendChild(listItem);
     });
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    const clientId = '479255ae-cf23-4c2e-9209-555370df882c';
+    startGCSDKs(clientId).then(platformClient => {
+        addShowContactListsButtonListener(platformClient);
+    });
+});
