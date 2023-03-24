@@ -32,7 +32,7 @@ function fetchContactLists(platformClient, pageNumber = 1) {
   function fetchContactListsFromApi(pageNumber) {
     console.log('fetchContactListsFromApi');
     const apiInstance = new platformClient.OutboundApi();
-    const pageSize = 10;
+    const pageSize = 25
 
     apiInstance.getOutboundContactlists(pageSize, pageNumber - 1)
       .then(response => {
