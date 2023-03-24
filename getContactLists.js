@@ -64,6 +64,13 @@ function updatePaginationButtons(totalPages) {
     nextPageBtn.disabled = false;
   }
 
-  previousPageBtn.onclick = () => fetchContactLists(platformClientInstance, currentPage - 1);
-  nextPageBtn.onclick = () => fetchContactLists(platformClientInstance, currentPage + 1);
+  previousPageBtn.onclick = () => {
+    currentPage -= 1;
+    fetchContactLists(platformClientInstance, currentPage);
+  };
+  nextPageBtn.onclick = () => {
+    currentPage += 1;
+    fetchContactLists(platformClientInstance, currentPage);
+  };
 }
+
