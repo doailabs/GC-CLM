@@ -1,6 +1,11 @@
 function addShowContactListsButtonListener(platformClient) {
-  const showContactListsButton = document.getElementById('showContactLists');
-  showContactListsButton.addEventListener('click', function() {
+  console.log('addShowContactListsButtonListener called');
+
+  const showContactListsButton = document.querySelector('#showContactLists');
+  const contactListsContainer = document.querySelector('#contactLists');
+
+  showContactListsButton.addEventListener('click', () => {
+    contactListsContainer.innerHTML = '';
     fetchContactLists(platformClient);
   });
 }
