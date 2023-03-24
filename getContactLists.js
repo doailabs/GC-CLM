@@ -2,7 +2,6 @@ let currentPage = 1;
 let platformClientInstance;
 
 function fetchContactLists(platformClient, pageNumber = 1) {
-  currentPage = pageNumber;
   platformClientInstance = platformClient;
   console.log('getContactLists called');
 
@@ -29,17 +28,17 @@ function fetchContactLists(platformClient, pageNumber = 1) {
     });
   }
 
-
   function fetchContactListsFromApi(pageNumber) {
     console.log('fetchContactListsFromApi');
     const apiInstance = new platformClient.OutboundApi();
     const pageSize = 25
 
-    apiInstance.getOutboundContactlists(pageSize, pageNumber)
+    apiInstance.getOutboundContactlists(pageSize, pageNumber - 1)
       .then(response => {
         console.log('getOutboundContactlists response', response);
         const contactLists = response.entities;
         const totalPages = response.pageCount;
+        currentPage = pageNumber; // Mueve la actualización de currentPage aquí
         displayContactLists(contactLists, pageNumber, pageSize);
         updatePaginationButtons(totalPages);
       })
