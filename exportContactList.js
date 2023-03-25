@@ -10,12 +10,12 @@ function initiateContactListExport(platformClient, contactListId) {
   apiInstance.postOutboundContactlistExport(contactListId)
     .then(response => {
       console.log('Export initiated:', response);
-      waitForExportCompletion(contactListId, response.id);
+      waitForExportCompletion(platformClient, contactListId, response.id);
     })
     .catch(error => console.error('Error initiating contact list export:', error));
 }
 
-function waitForExportCompletion(contactListId, jobId) {
+function waitForExportCompletion(platformClient, contactListId, jobId) {
   const apiInstance = new platformClient.OutboundApi();
   const checkInterval = setInterval(() => {
     apiInstance.getOutboundContactlistExport(contactListId, jobId)
