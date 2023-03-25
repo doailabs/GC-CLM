@@ -27,7 +27,7 @@ function downloadExportedCsv(apiInstance, contactListId, jobId, tries = 0) {
   };
   apiInstance.getOutboundContactlistExport(contactListId, jobId, opts)
     .then(response => {
-      console.log('Export job completed, download URI:', response.uri);
+      console.log('Trabajo de exportación completado, URI de descarga:', response.uri);
       return fetch(response.uri);
     })
     .then(response => response.text())
