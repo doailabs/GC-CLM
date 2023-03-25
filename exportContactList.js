@@ -1,11 +1,11 @@
 let selectedContactListId;
 
-function handleContactListSelection(contactListId) {
+function handleContactListSelection(platformClient, contactListId) {
   selectedContactListId = contactListId;
-  initiateContactListExport(contactListId);
+  initiateContactListExport(platformClient, contactListId);
 }
 
-function initiateContactListExport(contactListId) {
+function initiateContactListExport(platformClient, contactListId) {
   const apiInstance = new platformClient.OutboundApi();
   apiInstance.postOutboundContactlistExport(contactListId)
     .then(response => {
