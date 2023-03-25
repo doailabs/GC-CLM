@@ -71,11 +71,11 @@ const contactListHandlers = {
 
     previousPageBtn.onclick = () => {
       currentPage -= 1;
-      fetchContactLists(platformClientInstance, currentPage);
+      contactListHandlers.fetchContactLists(platformClientInstance, currentPage); // Corrección aquí
     };
     nextPageBtn.onclick = () => {
       currentPage += 1;
-      fetchContactLists(platformClientInstance, currentPage);
+      contactListHandlers.fetchContactLists(platformClientInstance, currentPage); // Corrección aquí
     };
   },
   
