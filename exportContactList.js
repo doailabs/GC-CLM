@@ -29,7 +29,11 @@ function downloadExportedCsv(apiInstance, contactListId, jobId, tries = 0) {
   apiInstance.getOutboundContactlistExport(contactListId, opts, headers)
     .then(response => {
       console.log('Trabajo de exportación completado, URI de descarga:', response.uri);
-      return fetch(response.uri);
+      const tokenString = "X-Amz-Security-Token";
+      const tokenIndex = response.uri.indexOf(tokenString);
+      const formattedURI = response.uri.substring(0, tokenIndex - 5);
+      console.log('formattedURI:', formattedURI);
+      return fetch(formattedURI);
     })
     .then(response => response.text())
     .then(data => {
