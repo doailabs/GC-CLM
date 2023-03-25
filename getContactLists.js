@@ -1,7 +1,7 @@
 let currentPage = 1;
 let platformClientInstance;
 const contactListHandlers = {
-  fetchContactLists(platformClient, pageNumber = 1) {
+  fetchContactLists(platformClient, clientId, pageNumber = 1) {
     currentPage = pageNumber;
     platformClientInstance = platformClient;
     console.log('getContactLists called');
@@ -94,7 +94,7 @@ const contactListHandlers = {
     };
   },
 
-  addShowContactListsButtonListener(platformClient) {
+  addShowContactListsButtonListener(platformClient, clientId) {
     console.log('addShowContactListsButtonListener called');
 
     const showContactListsButton = document.querySelector('#showContactLists');
@@ -102,7 +102,7 @@ const contactListHandlers = {
 
     showContactListsButton.addEventListener('click', () => {
       contactListsContainer.innerHTML = '';
-      contactListHandlers.fetchContactLists(platformClient);
+      contactListHandlers.fetchContactLists(platformClient, clientId);
     });
   }
 };
