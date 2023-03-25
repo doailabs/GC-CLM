@@ -1,7 +1,7 @@
 let selectedContactListId;
 let csvData;
 
-function handleContactListSelection(platformClient, contactListId) {
+function handleContactListSelection(platformClient, contactListId, clientId) {
   selectedContactListId = contactListId;
   initiateContactListExport(platformClient, contactListId);
 }
