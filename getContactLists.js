@@ -6,39 +6,39 @@ const contactListHandlers = {
     platformClientInstance = platformClient;
     console.log('getContactLists called');
 
-    function displayContactLists(contactLists) {
-      console.log('displayContactLists', contactLists);
-      const contactListsTableBody = document.querySelector('#contactListsTable tbody');
-      contactListsTableBody.innerHTML = '';
+  function displayContactLists(contactLists) {
+    console.log('displayContactLists', contactLists);
+    const contactListsTableBody = document.querySelector('#contactListsTable tbody');
+    contactListsTableBody.innerHTML = '';
 
-      contactLists.forEach(list => {
-        const row = document.createElement('tr');
-        const idCell = document.createElement('td');
-        idCell.textContent = list.id;
-        const nameCell = document.createElement('td');
-        nameCell.textContent = list.name;
-        const dateCreatedCell = document.createElement('td');
-        dateCreatedCell.textContent = list.dateCreated;
-        const divisionCell = document.createElement('td');
-        divisionCell.textContent = list.division.name;
+    contactLists.forEach(list => {
+      const row = document.createElement('tr');
+      const idCell = document.createElement('td');
+      idCell.textContent = list.id;
+      const nameCell = document.createElement('td');
+      nameCell.textContent = list.name;
+      const dateCreatedCell = document.createElement('td');
+      dateCreatedCell.textContent = list.dateCreated;
+      const divisionCell = document.createElement('td');
+      divisionCell.textContent = list.division.name;
 
-        const radioButtonCell = document.createElement('td');
+      // Añadir el radio button en la última columna
+      const radioButtonCell = document.createElement('td');
+      const radioButton = document.createElement('input');
+      radioButton.type = 'radio';
+      radioButton.name = 'contactListSelection';
+      radioButton.onclick = () => handleContactListSelection(list.id);
+      radioButtonCell.appendChild(radioButton);
 
-        const radioButton = document.createElement('input');
-        radioButton.type = 'radio';
-        radioButton.name = 'contactListSelection';
-        radioButton.value = list.id;
-        radioButton.addEventListener('change', () => handleContactListSelection(list.id));
+      row.appendChild(idCell);
+      row.appendChild(nameCell);
+      row.appendChild(dateCreatedCell);
+      row.appendChild(divisionCell);
+      row.appendChild(radioButtonCell); 
+      contactListsTableBody.appendChild(row);
+    });
+  }
 
-        radioButtonCell.appendChild(radioButton);
-        row.appendChild(idCell);
-        row.appendChild(nameCell);
-        row.appendChild(dateCreatedCell);
-        row.appendChild(divisionCell);
-        row.appendChild(radioButtonCell); 
-        contactListsTableBody.appendChild(row);
-      });
-    }
 
 
     function fetchContactListsFromApi(pageNumber) {
