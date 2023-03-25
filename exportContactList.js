@@ -12,7 +12,7 @@ function initiateContactListExport(platformClient, contactListId, clientId) {
     .then(response => {
       console.log('Export initiated:', response);
       setTimeout(() => {
-        downloadExportedCsv(apiInstance, contactListId, response.id, clientId);
+        downloadExportedCsv(platformClient, contactListId, response.id, clientId);
       }, 2000);
     })
     .catch(error => console.error('Error al iniciar la exportación de la lista de contactos:', error));
