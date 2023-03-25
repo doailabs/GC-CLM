@@ -6,39 +6,43 @@ const contactListHandlers = {
     platformClientInstance = platformClient;
     console.log('getContactLists called');
 
-  function displayContactLists(contactLists) {
-    console.log('displayContactLists', contactLists);
-    const contactListsTableBody = document.querySelector('#contactListsTable tbody');
-    contactListsTableBody.innerHTML = '';
+    function displayContactLists(contactLists) {
+      console.log('displayContactLists', contactLists);
+      const contactListsTableBody = document.querySelector('#contactListsTable tbody');
+      contactListsTableBody.innerHTML = '';
 
-    contactLists.forEach(list => {
-      const row = document.createElement('tr');
-      const idCell = document.createElement('td');
-      idCell.textContent = list.id;
-      const nameCell = document.createElement('td');
-      nameCell.textContent = list.name;
-      const dateCreatedCell = document.createElement('td');
-      dateCreatedCell.textContent = list.dateCreated;
-      const divisionCell = document.createElement('td');
-      divisionCell.textContent = list.division.name;
+      contactLists.forEach(list => {
+        const row = document.createElement('tr');
+        const idCell = document.createElement('td');
+        idCell.textContent = list.id;
+        const nameCell = document.createElement('td');
+        nameCell.textContent = list.name;
+        const dateCreatedCell = document.createElement('td');
+        dateCreatedCell.textContent = list.dateCreated;
+        const divisionCell = document.createElement('td');
+        divisionCell.textContent = list.division.name;
 
-      const radioButtonCell = document.createElement('td');
-      const radioButton = document.createElement('input');
-      radioButton.type = 'radio';
-      radioButton.name = 'contactListSelection';
-      radioButton.onclick = () => handleContactListSelection(platformClientInstance, list.id); //llama a handleContactListSelection al seleccionar una CL
-      radioButtonCell.appendChild(radioButton);
+        const radioButtonCell = document.createElement('td');
+        const radioButton = document.createElement('input');
+        radioButton.type = 'radio';
+        radioButton.name = 'contactListSelection';
+        radioButton.onclick = () => handleContactListSelection(platformClientInstance, list.id); //llama a handleContactListSelection al seleccionar una CL
+        radioButtonCell.appendChild(radioButton);
 
-      row.appendChild(idCell);
-      row.appendChild(nameCell);
-      row.appendChild(dateCreatedCell);
-      row.appendChild(divisionCell);
-      row.appendChild(radioButtonCell); 
-      contactListsTableBody.appendChild(row);
-    });
-  }
+        row.appendChild(idCell);
+        row.appendChild(nameCell);
+        row.appendChild(dateCreatedCell);
+        row.appendChild(divisionCell);
+        row.appendChild(radioButtonCell); 
+        contactListsTableBody.appendChild(row);
+      });
+    }
 
-
+    function showLoadingScreen() {
+      const loadingScreen = document.createElement('div');
+      loadingScreen.textContent = 'Cargando registros de la contact list...';
+      document.body.appendChild(loadingScreen);
+    }
 
     function fetchContactListsFromApi(pageNumber) {
       console.log('fetchContactListsFromApi');
@@ -50,16 +54,16 @@ const contactListHandlers = {
         "pageNumber": pageNumber
       };
 
-    apiInstance.getOutboundContactlists(opts)
-      .then(response => {
-        console.log('getOutboundContactlists response', response);
-        const contactLists = response.entities;
-        const totalPages = response.pageCount;
-        displayContactLists(contactLists);
-        contactListHandlers.updatePaginationButtons(totalPages); 
-      })
-      .catch(error => console.error('Error al cargar las contact lists:', error));
-  }
+      apiInstance.getOutboundContactlists(opts)
+        .then(response => {
+          console.log('getOutboundContactlists response', response);
+          const contactLists = response.entities;
+          const totalPages = response.pageCount;
+          displayContactLists(contactLists);
+          contactListHandlers.updatePaginationButtons(totalPages);
+        })
+        .catch(error => console.error('Error al cargar las contact lists:', error));
+    }
 
     fetchContactListsFromApi(pageNumber);
   },
@@ -82,14 +86,14 @@ const contactListHandlers = {
 
     previousPageBtn.onclick = () => {
       currentPage -= 1;
-      contactListHandlers.fetchContactLists(platformClientInstance, currentPage); 
+      contactListHandlers.fetchContactLists(platformClientInstance, currentPage);
     };
     nextPageBtn.onclick = () => {
       currentPage += 1;
-      contactListHandlers.fetchContactLists(platformClientInstance, currentPage); 
+      contactListHandlers.fetchContactLists(platformClientInstance, currentPage);
     };
   },
-  
+
   addShowContactListsButtonListener(platformClient) {
     console.log('addShowContactListsButtonListener called');
 
