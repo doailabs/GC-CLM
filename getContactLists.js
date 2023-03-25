@@ -21,23 +21,25 @@ const contactListHandlers = {
         dateCreatedCell.textContent = list.dateCreated;
         const divisionCell = document.createElement('td');
         divisionCell.textContent = list.division.name;
-        const radioCell = document.createElement('td');
+
+        const radioButtonCell = document.createElement('td');
+
         const radioButton = document.createElement('input');
         radioButton.type = 'radio';
-        radioButton.name = 'contactList';
+        radioButton.name = 'contactListSelection';
         radioButton.value = list.id;
-        radioButton.addEventListener('change', () => {
-          handleContactListSelection(list.id);
-        });
-        radioCell.appendChild(radioButton);
-        row.appendChild(radioCell);
+        radioButton.addEventListener('change', () => handleContactListSelection(list.id));
+
+        radioButtonCell.appendChild(radioButton);
         row.appendChild(idCell);
         row.appendChild(nameCell);
         row.appendChild(dateCreatedCell);
         row.appendChild(divisionCell);
+        row.appendChild(radioButtonCell); 
         contactListsTableBody.appendChild(row);
       });
     }
+
 
     function fetchContactListsFromApi(pageNumber) {
       console.log('fetchContactListsFromApi');
