@@ -25,8 +25,8 @@ function downloadExportedCsv(platformClient, contactListId, jobId, clientId, tri
     "download": "false"
   };
   let opts_download = { 
-    "issueRedirect": true, 
-    "redirectToAuth": true 
+    "issueRedirect": false, 
+    "redirectToAuth": false 
   };
   apiInstance.getOutboundContactlistExport(contactListId, opts)
     .then(response => {
