@@ -25,10 +25,12 @@ function downloadExportedCsv(apiInstance, contactListId, jobId) {
   const opts = {
     "download": false
   };
-  apiInstance.getOutboundContactlistExport(contactListId, jobId, opts, '', 'text/plain')
+  apiInstance.getOutboundContactlistExport(contactListId, jobId, opts)
     .then(response => {
       console.log('Export job completed');
-      csvData = response;
+      return response.text(); // obtener el contenido del CSV como un string
+    })
+    .then(csvData => {
       showContactListRecords(csvData);
     })
     .catch(error => console.error('Error downloading exported CSV:', error));
