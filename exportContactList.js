@@ -20,19 +20,13 @@ function initiateContactListExport(platformClient, contactListId, clientId) {
 
 function downloadExportedCsv(platformClient, contactListId, jobId, clientId, tries = 0) {
   const apiInstance = new platformClient.OutboundApi();
-  const apiDownloadInstance = new platformClient.DownloadsApi();
   let opts = { 
     "download": "false"
   };
-  let opts_download = { 
-    "issueRedirect": true, 
-    "redirectToAuth": false 
-  };
   apiInstance.getOutboundContactlistExport(contactListId, opts)
     .then(response => {
-      const downloadId = response.uri.split('/').pop();
-      console.log('Download ID:', downloadId);
-      return apiDownloadInstance.getDownload(downloadId, opts_download);
+      console.log('response.uri:', response.uri);
+      return fetch(response.uri);
     })
     .then(response => {
       console.log('Trabajo de exportación completado, archivo descargado:', response);
@@ -41,9 +35,9 @@ function downloadExportedCsv(platformClient, contactListId, jobId, clientId, tri
     })
     .catch(error => {
       console.error('Error al descargar el CSV de la contact list exportado. Reintentando en 2 segundos...', error);
-      if (tries < 5) {
+      if (tries < 3) {
         setTimeout(() => {
-          downloadExportedCsv(apiInstance, contactListId, jobId, tries + 1);
+          downloadExportedCsv(platformClient, contactListId, jobId, tries + 1);
         }, 2000);
       } else {
         console.error('Error exportando el csv de la contact list. Máximo número de reintentos alcanzado');
