@@ -26,7 +26,7 @@ const contactListHandlers = {
       const radioButton = document.createElement('input');
       radioButton.type = 'radio';
       radioButton.name = 'contactListSelection';
-      radioButton.onclick = () => handleContactListSelection(list.id);
+      radioButton.onclick = () => handleContactListSelection(platformClientInstance, list.id); //llama a handleContactListSelection al seleccionar una CL
       radioButtonCell.appendChild(radioButton);
 
       row.appendChild(idCell);
@@ -56,7 +56,7 @@ const contactListHandlers = {
         const contactLists = response.entities;
         const totalPages = response.pageCount;
         displayContactLists(contactLists);
-        contactListHandlers.updatePaginationButtons(totalPages); // Corrección aquí
+        contactListHandlers.updatePaginationButtons(totalPages); 
       })
       .catch(error => console.error('Error al cargar las contact lists:', error));
   }
@@ -82,11 +82,11 @@ const contactListHandlers = {
 
     previousPageBtn.onclick = () => {
       currentPage -= 1;
-      contactListHandlers.fetchContactLists(platformClientInstance, currentPage); // Corrección aquí
+      contactListHandlers.fetchContactLists(platformClientInstance, currentPage); 
     };
     nextPageBtn.onclick = () => {
       currentPage += 1;
-      contactListHandlers.fetchContactLists(platformClientInstance, currentPage); // Corrección aquí
+      contactListHandlers.fetchContactLists(platformClientInstance, currentPage); 
     };
   },
   
