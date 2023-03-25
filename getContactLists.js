@@ -26,7 +26,7 @@ const contactListHandlers = {
         const radioButton = document.createElement('input');
         radioButton.type = 'radio';
         radioButton.name = 'contactListSelection';
-        radioButton.onclick = () => handleContactListSelection(platformClientInstance, list.id); //llama a handleContactListSelection al seleccionar una CL
+        radioButton.onclick = () => handleContactListSelection(platformClientInstance, list.id, clientId); //llama a handleContactListSelection al seleccionar una CL
         radioButtonCell.appendChild(radioButton);
 
         row.appendChild(idCell);
