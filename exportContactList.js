@@ -32,7 +32,7 @@ function waitForExportCompletion(platformClient, contactListId, jobId) {
         clearInterval(checkInterval);
         console.error('Error checking export job status:', error);
       });
-  }, 1000); // Poll the job status every second
+  }, 3000); // Poll the job status every 3 seconds
 }
 
 function downloadExportedCsv(uri) {
