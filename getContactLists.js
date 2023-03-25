@@ -48,7 +48,7 @@ const contactListHandlers = {
           updatePaginationButtons(totalPages);
         })
         .catch(error => console.error('Error al cargar las contact lists:', error));
-    } // Aquí faltaba una llave de cierre
+    }
 
     fetchContactListsFromApi(pageNumber);
   },
