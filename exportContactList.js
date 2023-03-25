@@ -49,7 +49,10 @@ function downloadExportedCsv(uri) {
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
       }, 100);
+      // Guardar la ruta del archivo CSV
+      csvFilePath = link.href;
     })
     .catch(error => console.error('Error downloading exported CSV:', error));
 }
+
 
