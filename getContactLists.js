@@ -21,10 +21,17 @@ const contactListHandlers = {
         dateCreatedCell.textContent = list.dateCreated;
         const divisionCell = document.createElement('td');
         divisionCell.textContent = list.division.name;
+        const radioButtonCell = document.createElement('td');
+        const radioButton = document.createElement('input');
+        radioButton.type = 'radio';
+        radioButton.name = 'contactListSelection';
+        radioButton.value = list.id;
+        radioButtonCell.appendChild(radioButton);
         row.appendChild(idCell);
         row.appendChild(nameCell);
         row.appendChild(dateCreatedCell);
         row.appendChild(divisionCell);
+        row.appendChild(radioButtonCell);
         contactListsTableBody.appendChild(row);
       });
     }
