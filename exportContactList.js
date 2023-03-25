@@ -20,17 +20,13 @@ function initiateContactListExport(platformClient, contactListId) {
 
 function downloadExportedCsv(apiInstance, contactListId, jobId, tries = 0) {
   const opts = {
-    "download": true
+    "download": false
   };
 
   apiInstance.getOutboundContactlistExport(contactListId, opts)
     .then(response => {
       console.log('Trabajo de exportación completado, URI de descarga:', response.uri);
-      const tokenString = "X-Amz-Security-Token";
-      const tokenIndex = response.uri.indexOf(tokenString);
-      const formattedURI = response.uri.substring(0, tokenIndex - 5);//recortamos la URI para evitar error AWS: Only one auth mechanism allowed; only the X-Amz-Algorithm query parameter, Signature query string parameter or the Authorization header should be specified
-      console.log('formattedURI:', formattedURI);
-      return fetch(formattedURI);
+      return fetch(response.uri);
     })
     .then(response => response.text())
     .then(data => {
