@@ -18,7 +18,7 @@ function initiateContactListExport(platformClient, contactListId) {
         downloadExportedCsv(apiInstance, contactListId, response.id);
       }, 2000);
     })
-    .catch(error => console.error('Error initiating contact list export:', error));
+    .catch(error => console.error('Error al iniciar la exportación de la lista de contactos:', error));
 }
 
 function downloadExportedCsv(apiInstance, contactListId, jobId, tries = 0) {
