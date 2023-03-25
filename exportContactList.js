@@ -19,28 +19,25 @@ function initiateContactListExport(platformClient, contactListId, clientId) {
 }
 
 function downloadExportedCsv(apiInstance, contactListId, jobId, clientId, tries = 0) {
-  
   let opts = { 
     "download": "false"
   };
-
+  let opts_download = { 
+    "contentDisposition": "contentDisposition_example", 
+    "issueRedirect": true, 
+    "redirectToAuth": true 
+  };
   apiInstance.getOutboundContactlistExport(contactListId, opts)
-    .then((data) => {
-      console.log(`getOutboundContactlistExport success! data: ${JSON.stringify(data, null, 2)}`);
-      let requestURL =(`https://api.allorigins.win/get?url=${encodeURIComponent(data.uri)}`) //usando proxy api.allorigins.win para evitar error CORS
-      console.log('requestURL:', requestURL);
-      return fetch(requestURL)
+    .then(response => {
+      const downloadId = response.uri.split('/').pop();
+      console.log('Download ID:', downloadId);
+      return apiInstance.getDownload(downloadId, opts_download);
     })
-    .then(response => response.text())
-    .then(data => {
-      csvData = data;
+    .then(response => {
+      console.log('Trabajo de exportación completado, archivo descargado:', response);
+      csvData = response.body;
       showContactListRecords(csvData);
     })
-
-    .then((data) => {
-      console.log(`getOutboundContactlistExport success! data: ${JSON.stringify(data, null, 2)}`);
-    })  
-  
     .catch(error => {
       console.error('Error al descargar el CSV de la contact list exportado. Reintentando en 2 segundos...', error);
       if (tries < 5) {
