@@ -19,6 +19,7 @@ function initiateContactListExport(platformClient, contactListId) {
 }
 
 function downloadExportedCsv(apiInstance, contactListId, jobId, tries = 0) {
+  
   const opts = {
     "download": false
   };
