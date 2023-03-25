@@ -9,6 +9,8 @@ function showContactListRecords(csvData) {
   const pageCount = Math.ceil(rowCount / 50);
   let currentPage = 1;
 
+  console.log(`Mostrando ${rowCount} filas`);
+
   const table = document.createElement('table');
   table.id = 'contactListRecordsTable';
 
@@ -42,6 +44,8 @@ function showContactListRecords(csvData) {
       tbody.appendChild(tableRow);
     });
 
+    console.log(`Mostrando filas del ${start} al ${end - 1} (de un total de ${rowCount})`);
+
     const previousPageButton = document.createElement('button');
     previousPageButton.textContent = 'Anterior';
     previousPageButton.disabled = currentPage === 1;
@@ -51,6 +55,8 @@ function showContactListRecords(csvData) {
     nextPageButton.textContent = 'Siguiente';
     nextPageButton.disabled = currentPage === pageCount;
     paginationDiv.appendChild(nextPageButton);
+
+    console.log(`Página ${currentPage} de ${pageCount}`);
 
     previousPageButton.addEventListener('click', () => {
       currentPage--;
