@@ -39,7 +39,6 @@ function waitForExportCompletion(platformClient, contactListId, jobId) {
   }, 2000); // Poll the job status every two seconds
 }
 
-
 function downloadExportedCsv(uri) {
   fetch(uri)
     .then(response => response.blob())
@@ -54,8 +53,6 @@ function downloadExportedCsv(uri) {
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
       }, 100);
-      // Guardar la ruta del archivo CSV
-      csvFilePath = link.href;
     })
     .catch(error => console.error('Error downloading exported CSV:', error));
 }
