@@ -18,8 +18,9 @@ function initiateContactListExport(platformClient, contactListId, clientId) {
     .catch(error => console.error('Error al iniciar la exportación de la lista de contactos:', error));
 }
 
-function downloadExportedCsv(apiInstance, contactListId, jobId, clientId, tries = 0) {
-  let apiDownloadInstance = new platformClient.DownloadsApi();
+function downloadExportedCsv(platformClient, contactListId, jobId, clientId, tries = 0) {
+  const apiInstance = new platformClient.OutboundApi();
+  const apiDownloadInstance = new platformClient.DownloadsApi();
   let opts = { 
     "download": "false"
   };
