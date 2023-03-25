@@ -36,7 +36,7 @@ function downloadExportedCsv(apiInstance, contactListId, jobId, tries = 0) {
       showContactListRecords(csvData);
     })
     .catch(error => {
-      console.error('Error downloading exported CSV. Retrying in 2 seconds...', error);
+      console.error('Error al descargar el CSV exportado. Reintentando en 2 segundos...', error);
       if (tries < 5) {
         setTimeout(() => {
           downloadExportedCsv(apiInstance, contactListId, jobId, tries + 1);
