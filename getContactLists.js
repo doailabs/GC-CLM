@@ -22,7 +22,6 @@ const contactListHandlers = {
       const divisionCell = document.createElement('td');
       divisionCell.textContent = list.division.name;
 
-      // Añadir el radio button en la última columna
       const radioButtonCell = document.createElement('td');
       const radioButton = document.createElement('input');
       radioButton.type = 'radio';
