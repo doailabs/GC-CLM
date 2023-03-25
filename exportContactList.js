@@ -38,13 +38,13 @@ function downloadExportedCsv(apiInstance, contactListId, jobId, tries = 0) {
       showContactListRecords(csvData);
     })
     .catch(error => {
-      console.error('Error al descargar el CSV exportado. Reintentando en 2 segundos...', error);
+      console.error('Error al descargar el CSV de la contact list exportado. Reintentando en 2 segundos...', error);
       if (tries < 5) {
         setTimeout(() => {
           downloadExportedCsv(apiInstance, contactListId, jobId, tries + 1);
         }, 2000);
       } else {
-        console.error('Error exportando el csv de la contact list');
+        console.error('Error exportando el csv de la contact list. Máximo número de reintentos alcanzado');
       }
     });
 }
