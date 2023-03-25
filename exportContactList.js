@@ -24,7 +24,8 @@ function waitForExportCompletion(platformClient, contactListId, jobId) {
         if (response.status === 'completed') {
           clearInterval(checkInterval);
           console.log('Export job completed');
-          downloadExportedCsv(response.uri);
+          const downloadUri = response.uri;
+          downloadExportedCsv(downloadUri);
         } else if (response.status === 'failed') {
           clearInterval(checkInterval);
           console.error('Export job failed');
@@ -39,22 +40,16 @@ function waitForExportCompletion(platformClient, contactListId, jobId) {
   }, 2000); // Poll the job status every two seconds
 }
 
-function downloadExportedCsv(uri) {
-  fetch(uri)
-    .then(response => response.blob())
-    .then(blob => {
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `contact_list_${selectedContactListId}.csv`;
-      document.body.appendChild(link);
-      link.click();
-      setTimeout(() => {
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-      }, 100);
-    })
-    .catch(error => console.error('Error downloading exported CSV:', error));
+function downloadExportedCsv(downloadUri) {
+  const link = document.createElement('a');
+  link.href = downloadUri;
+  link.download = `contact_list_${selectedContactListId}.csv`;
+  document.body.appendChild(link);
+  link.click();
+  setTimeout(() => {
+    document.body.removeChild(link);
+  }, 100);
 }
+
 
 
