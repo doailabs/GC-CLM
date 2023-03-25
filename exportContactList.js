@@ -3,22 +3,22 @@ let csvData;
 
 function handleContactListSelection(platformClient, contactListId, clientId) {
   selectedContactListId = contactListId;
-  initiateContactListExport(platformClient, contactListId);
+  initiateContactListExport(platformClient, contactListId, clientId);
 }
 
-function initiateContactListExport(platformClient, contactListId) {
+function initiateContactListExport(platformClient, contactListId, clientId) {
   const apiInstance = new platformClient.OutboundApi();
   apiInstance.postOutboundContactlistExport(contactListId)
     .then(response => {
       console.log('Export initiated:', response);
       setTimeout(() => {
-        downloadExportedCsv(apiInstance, contactListId, response.id);
+        downloadExportedCsv(apiInstance, contactListId, response.id, clientId);
       }, 2000);
     })
     .catch(error => console.error('Error al iniciar la exportación de la lista de contactos:', error));
 }
 
-function downloadExportedCsv(apiInstance, contactListId, jobId, tries = 0) {
+function downloadExportedCsv(apiInstance, contactListId, jobId, clientId, tries = 0) {
   
   const opts = {
     "download": false
@@ -27,7 +27,9 @@ function downloadExportedCsv(apiInstance, contactListId, jobId, tries = 0) {
   apiInstance.getOutboundContactlistExport(contactListId, opts)
     .then(response => {
       console.log('Trabajo de exportación completado, URI de descarga:', response.uri);
-      return fetch(response.uri);
+      const requestURL = "https://login.mypurecloud.de/authorize?response_type=code&redirect_uri="response.uri"&client_id="clientId;
+      console.log('requestURL:', requestURL);
+      return fetch(requestURL);
     })
     .then(response => response.text())
     .then(data => {
