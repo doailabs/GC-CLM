@@ -77,7 +77,10 @@ const contactListHandlers = {
     };
   }
 };
-window.contactListHandlers = contactListHandlers;
+window.addEventListener('DOMContentLoaded', () => {
+  window.contactListHandlers = contactListHandlers;
+});
+
 
 function addShowContactListsButtonListener(platformClient) {
   console.log('addShowContactListsButtonListener called');
