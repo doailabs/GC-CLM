@@ -11,7 +11,7 @@ function initiateContactListExport(platformClient, contactListId) {
   const opts = {
     "download": false
   };
-  apiInstance.postOutboundContactlistExport(contactListId)
+  apiInstance.postOutboundContactlistExport(contactListId, { headers: { "Origin": "https://doailabs.github.io" } })
     .then(response => {
       console.log('Export initiated:', response);
       setTimeout(() => {
@@ -25,7 +25,7 @@ function downloadExportedCsv(apiInstance, contactListId, jobId, tries = 0) {
   const opts = {
     "download": false
   };
-  apiInstance.getOutboundContactlistExport(contactListId, jobId, opts)
+  apiInstance.getOutboundContactlistExport(contactListId, jobId, { headers: { "Origin": "https://doailabs.github.io" } })
     .then(response => {
       console.log('Trabajo de exportación completado, URI de descarga:', response.uri);
       return fetch(response.uri);
