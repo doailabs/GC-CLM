@@ -28,6 +28,7 @@ function downloadExportedCsv(apiInstance, contactListId, jobId, clientId, tries 
     .then(response => {
       console.log('Trabajo de exportación completado, URI de descarga:', response.uri);
       let requestURL =(`https://api.allorigins.win/get?url=${encodeURIComponent(response.uri)}`) //usando proxy api.allorigins.win para evitar error CORS
+      console.log('requestURL:', requestURL);
       return fetch(requestURL)
     })
     .then(response => response.text())
