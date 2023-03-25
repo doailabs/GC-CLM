@@ -21,7 +21,7 @@ function initiateContactListExport(platformClient, contactListId, clientId) {
 function downloadExportedCsv(apiInstance, contactListId, jobId, clientId, tries = 0) {
   
   let opts = { 
-    "download": "false"
+    "download": "true"
   };
 
   apiInstance.getOutboundContactlistExport(contactListId, opts)
