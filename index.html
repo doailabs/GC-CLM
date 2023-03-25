@@ -62,7 +62,7 @@
 
     startGCSDKs(clientId)
       .then(platformClient => {
-        contactListHandlers.addShowContactListsButtonListener(platformClient);
+        contactListHandlers.addShowContactListsButtonListener(platformClient, clientId);
       });
   </script>
 </body>
