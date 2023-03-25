@@ -26,25 +26,21 @@ function downloadExportedCsv(platformClient, contactListId, jobId, clientId, tri
   apiInstance.getOutboundContactlistExport(contactListId, opts)
     .then(response => {
       console.log('response.uri:', response.uri);
-      return fetch(response.uri);
+      return fetch(response.uri, {mode: "no-cors"});
     })
     .then(response => {
       console.log('Trabajo de exportación completado, archivo descargado:', response);
-      return response.text(); // Usar el método text() para obtener el contenido del archivo
-    })
-    .then(data => {
-      csvData = data;
+      csvData = response.body;
       showContactListRecords(csvData);
     })
     .catch(error => {
       console.error('Error al descargar el CSV de la contact list exportado. Reintentando en 2 segundos...', error);
       if (tries < 3) {
         setTimeout(() => {
-          downloadExportedCsv(platformClient, contactListId, jobId, clientId, tries + 1);
+          downloadExportedCsv(platformClient, contactListId, jobId, tries + 1);
         }, 2000);
       } else {
         console.error('Error exportando el csv de la contact list. Máximo número de reintentos alcanzado');
       }
     });
 }
-
