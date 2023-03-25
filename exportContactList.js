@@ -19,6 +19,7 @@ function initiateContactListExport(platformClient, contactListId, clientId) {
 }
 
 function downloadExportedCsv(apiInstance, contactListId, jobId, clientId, tries = 0) {
+  let apiDownloadInstance = new platformClient.DownloadsApi();
   let opts = { 
     "download": "false"
   };
@@ -30,7 +31,7 @@ function downloadExportedCsv(apiInstance, contactListId, jobId, clientId, tries 
     .then(response => {
       const downloadId = response.uri.split('/').pop();
       console.log('Download ID:', downloadId);
-      return apiInstance.getDownload(downloadId, opts_download);
+      return apiDownloadInstance.getDownload(downloadId, opts_download);
     })
     .then(response => {
       console.log('Trabajo de exportación completado, archivo descargado:', response);
