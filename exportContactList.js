@@ -18,22 +18,27 @@ function initiateContactListExport(platformClient, contactListId) {
 function waitForExportCompletion(platformClient, contactListId, jobId) {
   const apiInstance = new platformClient.OutboundApi();
   const checkInterval = setInterval(() => {
+    console.log('Checking export job status...');
     apiInstance.getOutboundContactlistExport(contactListId, jobId)
       .then(response => {
         if (response.status === 'completed') {
           clearInterval(checkInterval);
+          console.log('Export job completed');
           downloadExportedCsv(response.uri);
         } else if (response.status === 'failed') {
           clearInterval(checkInterval);
           console.error('Export job failed');
+        } else {
+          console.log('Export job still in progress...');
         }
       })
       .catch(error => {
         clearInterval(checkInterval);
         console.error('Error checking export job status:', error);
       });
-  }, 3000); // Poll the job status every 3 seconds
+  }, 2000); // Poll the job status every two seconds
 }
+
 
 function downloadExportedCsv(uri) {
   fetch(uri)
