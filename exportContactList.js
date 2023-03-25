@@ -23,7 +23,6 @@ function downloadExportedCsv(apiInstance, contactListId, jobId, clientId, tries 
     "download": "false"
   };
   let opts_download = { 
-    "contentDisposition": "contentDisposition_example", 
     "issueRedirect": true, 
     "redirectToAuth": true 
   };
