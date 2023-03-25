@@ -8,6 +8,9 @@ function handleContactListSelection(platformClient, contactListId) {
 
 function initiateContactListExport(platformClient, contactListId) {
   const apiInstance = new platformClient.OutboundApi();
+  const opts = {
+    "download": false
+  };
   apiInstance.postOutboundContactlistExport(contactListId)
     .then(response => {
       console.log('Export initiated:', response);
@@ -22,7 +25,7 @@ function downloadExportedCsv(apiInstance, contactListId, jobId) {
   const opts = {
     "download": false
   };
-  apiInstance.getOutboundContactlistExport(contactListId, jobId, opts)
+  apiInstance.getOutboundContactlistExport(contactListId, jobId, opts, '', 'text/plain')
     .then(response => {
       console.log('Export job completed');
       csvData = response;
