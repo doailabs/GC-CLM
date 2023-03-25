@@ -1,6 +1,6 @@
 let csvData = [];
 let currentPage = 1;
-const rowsPerPage = 50;
+const rowsPerPage = 25
 let csvFilePath = '';
 
 // Obtener datos del CSV y mostrar la tabla
@@ -9,7 +9,7 @@ fetch(csvFilePath)
   .then(data => {
     // Parsear el CSV en un arreglo de objetos
     csvData = parseCsv(data);
-    // Mostrar la tabla con los primeros 50 registros
+    // Mostrar la tabla con los primeros 25 registros
     renderTable(currentPage);
   })
   .catch(error => console.error('Error al cargar el archivo CSV:', error));
