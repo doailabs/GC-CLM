@@ -21,14 +21,13 @@ function initiateContactListExport(platformClient, contactListId, clientId) {
 function downloadExportedCsv(apiInstance, contactListId, jobId, clientId, tries = 0) {
   
   let opts = { 
-    "download": "false",
-    "mode": "no-cors"
+    "download": "false"
   };
 
   apiInstance.getOutboundContactlistExport(contactListId, opts)
     .then(response => {
       console.log('Trabajo de exportación completado, URI de descarga:', response.uri);
-      return fetch(response.uri);
+      return fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(response.uri)}`)//usando proxy api.allorigins.win para evitar error CORS
     })
     .then(response => response.text())
     .then(data => {
