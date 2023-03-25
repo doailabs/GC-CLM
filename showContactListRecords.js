@@ -17,6 +17,11 @@ function showContactListRecords(csvUrl) {
 
   document.body.appendChild(tableDiv);
 
+  document.addEventListener('DOMContentLoaded', () => {
+    const loadingScreen = document.querySelector('#loadingScreen');
+    loadingScreen.style.display = 'none';
+  });
+
   const request = new XMLHttpRequest();
   request.open('GET', csvUrl, true);
   request.onreadystatechange = () => {
