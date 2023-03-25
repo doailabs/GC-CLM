@@ -27,7 +27,7 @@ function downloadExportedCsv(apiInstance, contactListId, jobId, clientId, tries 
   apiInstance.getOutboundContactlistExport(contactListId, opts)
     .then(response => {
       console.log('Trabajo de exportación completado, URI de descarga:', response.uri);
-      const requestURL = "https://login.mypurecloud.de/authorize?response_type=code&redirect_uri="response.uri"&client_id="clientId;
+      const requestURL = "https://login.mypurecloud.de/authorize?response_type=code&redirect_uri=" + response.uri + "&client_id=" + clientId;
       console.log('requestURL:', requestURL);
       return fetch(requestURL);
     })
