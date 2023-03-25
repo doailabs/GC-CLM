@@ -15,32 +15,34 @@ function initiateContactListExport(platformClient, contactListId) {
     .then(response => {
       console.log('Export initiated:', response);
       setTimeout(() => {
-        downloadExportedCsv(apiInstance, contactListId, response.id, 0);
+        downloadExportedCsv(apiInstance, contactListId, response.id);
       }, 2000);
     })
     .catch(error => console.error('Error initiating contact list export:', error));
 }
 
-function downloadExportedCsv(apiInstance, contactListId, jobId, numAttempts) {
+function downloadExportedCsv(apiInstance, contactListId, jobId, tries = 0) {
   const opts = {
     "download": false
   };
   apiInstance.getOutboundContactlistExport(contactListId, jobId, opts)
     .then(response => {
       console.log('Export job completed');
-      return response.text(); // obtener el contenido del CSV como un string
+      return fetch(response.uri);
     })
-    .then(csvData => {
+    .then(response => response.text())
+    .then(data => {
+      csvData = data;
       showContactListRecords(csvData);
     })
     .catch(error => {
-      if (numAttempts < 5) {
-        console.error('Error downloading exported CSV. Retrying in 2 seconds...', error);
+      console.error('Error downloading exported CSV. Retrying in 2 seconds...', error);
+      if (tries < 5) {
         setTimeout(() => {
-          downloadExportedCsv(apiInstance, contactListId, jobId, numAttempts + 1);
+          downloadExportedCsv(apiInstance, contactListId, jobId, tries + 1);
         }, 2000);
       } else {
-        console.error('Error exporting the contact list CSV.');
+        console.error('Error exportando el csv de la contact list');
       }
     });
 }
