@@ -18,7 +18,7 @@
     <div id="contactLists">
         <!-- Aquí se mostrarán las contact lists -->
     </div>
-
+    
     <div id="loadingScreen" style="display:none;">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -33,6 +33,21 @@
             </div>
         </div>
     </div>
+    
+    <table id="contactListsTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Fecha de creación</th>
+                <th>División</th>
+                <th></th> <!-- Columna vacía para radio buttons -->
+            </tr>
+        </thead>
+        <tbody id="contactListsTableBody">
+            <!-- Aquí se mostrarán las listas de contactos -->
+        </tbody>
+    </table>    
 
     <script>
         const clientId = '479255ae-cf23-4c2e-9209-555370df882c';
