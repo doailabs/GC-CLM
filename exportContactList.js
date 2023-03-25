@@ -15,13 +15,13 @@ function initiateContactListExport(platformClient, contactListId) {
     .then(response => {
       console.log('Export initiated:', response);
       setTimeout(() => {
-        downloadExportedCsv(apiInstance, contactListId, response.id);
+        downloadExportedCsv(apiInstance, contactListId, response.id, 0);
       }, 2000);
     })
     .catch(error => console.error('Error initiating contact list export:', error));
 }
 
-function downloadExportedCsv(apiInstance, contactListId, jobId) {
+function downloadExportedCsv(apiInstance, contactListId, jobId, numAttempts) {
   const opts = {
     "download": false
   };
@@ -33,5 +33,14 @@ function downloadExportedCsv(apiInstance, contactListId, jobId) {
     .then(csvData => {
       showContactListRecords(csvData);
     })
-    .catch(error => console.error('Error downloading exported CSV:', error));
+    .catch(error => {
+      if (numAttempts < 5) {
+        console.error('Error downloading exported CSV. Retrying in 2 seconds...', error);
+        setTimeout(() => {
+          downloadExportedCsv(apiInstance, contactListId, jobId, numAttempts + 1);
+        }, 2000);
+      } else {
+        console.error('Error exporting the contact list CSV.');
+      }
+    });
 }
