@@ -39,16 +39,16 @@ const contactListHandlers = {
         "pageNumber": pageNumber
       };
 
-      apiInstance.getOutboundContactlists(opts)
-        .then(response => {
-          console.log('getOutboundContactlists response', response);
-          const contactLists = response.entities;
-          const totalPages = response.pageCount;
-          displayContactLists(contactLists);
-          updatePaginationButtons(totalPages);
-        })
-        .catch(error => console.error('Error al cargar las contact lists:', error));
-    }
+    apiInstance.getOutboundContactlists(opts)
+      .then(response => {
+        console.log('getOutboundContactlists response', response);
+        const contactLists = response.entities;
+        const totalPages = response.pageCount;
+        displayContactLists(contactLists);
+        contactListHandlers.updatePaginationButtons(totalPages); // Corrección aquí
+      })
+      .catch(error => console.error('Error al cargar las contact lists:', error));
+  }
 
     fetchContactListsFromApi(pageNumber);
   },
