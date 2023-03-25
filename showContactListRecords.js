@@ -1,5 +1,5 @@
 function showContactListRecords(csvData) {
-  console.log('showContactListRecords called');
+  console.log('csvData recibido por showContactListRecords:', csvData);
 
   const lines = csvData.split('\n');
   const headerLine = lines[0];
@@ -8,8 +8,6 @@ function showContactListRecords(csvData) {
   const rowCount = lines.length - 1;
   const pageCount = Math.ceil(rowCount / 50);
   let currentPage = 1;
-
-  console.log(`Mostrando ${rowCount} filas`);
 
   const table = document.createElement('table');
   table.id = 'contactListRecordsTable';
@@ -44,8 +42,6 @@ function showContactListRecords(csvData) {
       tbody.appendChild(tableRow);
     });
 
-    console.log(`Mostrando filas del ${start} al ${end - 1} (de un total de ${rowCount})`);
-
     const previousPageButton = document.createElement('button');
     previousPageButton.textContent = 'Anterior';
     previousPageButton.disabled = currentPage === 1;
@@ -56,15 +52,18 @@ function showContactListRecords(csvData) {
     nextPageButton.disabled = currentPage === pageCount;
     paginationDiv.appendChild(nextPageButton);
 
-    console.log(`Página ${currentPage} de ${pageCount}`);
+    console.log('Página actual:', currentPage);
+    console.log('Número de páginas:', pageCount);
 
     previousPageButton.addEventListener('click', () => {
       currentPage--;
+      console.log('Página anterior pulsada. Nueva página actual:', currentPage);
       updateTable();
     });
 
     nextPageButton.addEventListener('click', () => {
       currentPage++;
+      console.log('Página siguiente pulsada. Nueva página actual:', currentPage);
       updateTable();
     });
   };
