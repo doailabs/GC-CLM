@@ -2,9 +2,10 @@
 let csvData = [];
 let currentPage = 1;
 const rowsPerPage = 50;
+let csvFilePath = '';
 
 // Obtener datos del CSV y mostrar la tabla
-fetch('ruta/al/csv/contact_list_XXXXX.csv')
+fetch(csvFilePath)
   .then(response => response.text())
   .then(data => {
     // Parsear el CSV en un arreglo de objetos
@@ -13,6 +14,7 @@ fetch('ruta/al/csv/contact_list_XXXXX.csv')
     renderTable(currentPage);
   })
   .catch(error => console.error('Error al cargar el archivo CSV:', error));
+
 
 // Función para parsear el CSV en un arreglo de objetos
 function parseCsv(csv) {
