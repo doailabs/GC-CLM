@@ -77,22 +77,24 @@ const contactListHandlers = {
       currentPage += 1;
       fetchContactLists(platformClientInstance, currentPage);
     };
+  },
+  
+  addShowContactListsButtonListener(platformClient) {
+    console.log('addShowContactListsButtonListener called');
+
+    const showContactListsButton = document.querySelector('#showContactLists');
+    const contactListsContainer = document.querySelector('#contactLists');
+
+    showContactListsButton.addEventListener('click', () => {
+      contactListsContainer.innerHTML = '';
+      contactListHandlers.fetchContactLists(platformClient);
+    });
   }
 };
+
 window.addEventListener('DOMContentLoaded', () => {
   window.contactListHandlers = contactListHandlers;
 });
 
 
-function addShowContactListsButtonListener(platformClient) {
-  console.log('addShowContactListsButtonListener called');
-
-  const showContactListsButton = document.querySelector('#showContactLists');
-  const contactListsContainer = document.querySelector('#contactLists');
-
-  showContactListsButton.addEventListener('click', () => {
-    contactListsContainer.innerHTML = '';
-    contactListHandlers.fetchContactLists(platformClient);
-  });
-}
 
