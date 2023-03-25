@@ -22,7 +22,11 @@ function downloadExportedCsv(apiInstance, contactListId, jobId, tries = 0) {
   const opts = {
     "download": true
   };
-  apiInstance.getOutboundContactlistExport(contactListId, opts)
+  const accessToken = platformClient.ApiClient.instance.authData.accessToken;
+  const headers = {
+    "Authorization": `Bearer ${accessToken}`
+  };
+  apiInstance.getOutboundContactlistExport(contactListId, opts, headers)
     .then(response => {
       console.log('Trabajo de exportación completado, URI de descarga:', response.uri);
       return fetch(response.uri);
