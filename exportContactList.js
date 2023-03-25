@@ -30,17 +30,21 @@ function downloadExportedCsv(platformClient, contactListId, jobId, clientId, tri
     })
     .then(response => {
       console.log('Trabajo de exportación completado, archivo descargado:', response);
-      csvData = response.body;
+      return response.text(); // Usar el método text() para obtener el contenido del archivo
+    })
+    .then(data => {
+      csvData = data;
       showContactListRecords(csvData);
     })
     .catch(error => {
       console.error('Error al descargar el CSV de la contact list exportado. Reintentando en 2 segundos...', error);
       if (tries < 3) {
         setTimeout(() => {
-          downloadExportedCsv(platformClient, contactListId, jobId, tries + 1);
+          downloadExportedCsv(platformClient, contactListId, jobId, clientId, tries + 1);
         }, 2000);
       } else {
         console.error('Error exportando el csv de la contact list. Máximo número de reintentos alcanzado');
       }
     });
 }
+
