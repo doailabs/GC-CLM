@@ -20,8 +20,9 @@ function initiateContactListExport(platformClient, contactListId, clientId) {
 
 function downloadExportedCsv(apiInstance, contactListId, jobId, clientId, tries = 0) {
   
-  const opts = {
-    "download": false
+  let opts = { 
+    "download": "false",
+    "mode": "no-cors"
   };
 
   apiInstance.getOutboundContactlistExport(contactListId, opts)
