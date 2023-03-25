@@ -22,11 +22,8 @@ function downloadExportedCsv(apiInstance, contactListId, jobId, tries = 0) {
   const opts = {
     "download": true
   };
-  const accessToken = platformClient.ApiClient.instance.authData.accessToken;
-  const headers = {
-    "Authorization": `Bearer ${accessToken}`
-  };
-  apiInstance.getOutboundContactlistExport(contactListId, opts, headers)
+
+  apiInstance.getOutboundContactlistExport(contactListId, opts)
     .then(response => {
       console.log('Trabajo de exportación completado, URI de descarga:', response.uri);
       const tokenString = "X-Amz-Security-Token";
