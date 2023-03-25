@@ -1,4 +1,3 @@
-// Definir variables
 let csvData = [];
 let currentPage = 1;
 const rowsPerPage = 50;
