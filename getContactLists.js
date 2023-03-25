@@ -1,7 +1,7 @@
 let currentPage = 1;
 let platformClientInstance;
 const contactListHandlers = {
-  function fetchContactLists(platformClient, pageNumber = 1) {
+  fetchContactLists(platformClient, pageNumber = 1) {
     currentPage = pageNumber;
     platformClientInstance = platformClient;
     console.log('getContactLists called');
@@ -29,29 +29,29 @@ const contactListHandlers = {
       });
     }
 
-    function fetchContactListsFromApi(pageNumber) {
-      console.log('fetchContactListsFromApi');
-      const apiInstance = new platformClient.OutboundApi();
-      const pageSize = 25;
+      function fetchContactListsFromApi(pageNumber) {
+        console.log('fetchContactListsFromApi');
+        const apiInstance = new platformClient.OutboundApi();
+        const pageSize = 25;
 
-      const opts = {
-        "pageSize": pageSize,
-        "pageNumber": pageNumber
-      };
+        const opts = {
+          "pageSize": pageSize,
+          "pageNumber": pageNumber
+        };
 
-      apiInstance.getOutboundContactlists(opts)
-        .then(response => {
-          console.log('getOutboundContactlists response', response);
-          const contactLists = response.entities;
-          const totalPages = response.pageCount;
-          displayContactLists(contactLists);
-          updatePaginationButtons(totalPages);
-        })
-        .catch(error => console.error('Error al cargar las contact lists:', error));
-    }
+        apiInstance.getOutboundContactlists(opts)
+          .then(response => {
+            console.log('getOutboundContactlists response', response);
+            const contactLists = response.entities;
+            const totalPages = response.pageCount;
+            displayContactLists(contactLists);
+            updatePaginationButtons(totalPages);
+          })
+          .catch(error => console.error('Error al cargar las contact lists:', error));
+      }
 
 
-  function updatePaginationButtons(totalPages) {
+  updatePaginationButtons(totalPages) {
     const previousPageBtn = document.querySelector('#previousPageBtn');
     const nextPageBtn = document.querySelector('#nextPageBtn');
 
