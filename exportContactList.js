@@ -23,10 +23,13 @@ function getDownloadUrl(platformClient, contactListId, clientId, tries = 0) {
   apiInstance.getOutboundContactlistExport(contactListId)  
     .then((data) => {
       console.log(`getOutboundContactlistExport success! data: ${JSON.stringify(data, null, 2)}`);
-      console.log('data.uri ', data.uri);
+      console.log('Download URL retrieved:', data.uri);
+      const modifiedUrl = data.uri + '?issueRedirect=false';
+      console.log('Modified URL:', modifiedUrl);
+      downloadExportedCsv(modifiedUrl);
     })
     .catch((err) => {
-      console.log("There was a failure calling getOutboundContactlistExport");
+      console.log("Ha habido un fallo recuperando la URL de exportación");
       console.error(err);
     });
 }
