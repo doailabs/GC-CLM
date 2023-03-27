@@ -50,4 +50,23 @@ async function downloadExportedCsv(platformClient, contactListId, tries = 0) {
       throw error;
     }
   }
+
+  try {
+    const downloadUrl = csvData + '?issueRedirect=false';
+    console.log('URL de descarga:', downloadUrl);
+    let response3 = null;
+    while (!response3 || response3.status === 404) {
+      console.log('Esperando que esté lista la descarga...');
+      await new Promise(resolve => setTimeout(resolve, 5000));
+      response3 = await fetch(downloadUrl, {
+        headers: {
+          Authorization: `Bearer ${platformClient.getAuth().getAccessToken()}`
+        }
+      });
+    }
+    console.log('Archivo CSV descargado correctamente');
+  } catch (error) {
+    console.error('Error al descargar el archivo CSV:', error);
+    throw error;
+  }
 }
