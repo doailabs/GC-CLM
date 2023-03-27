@@ -23,7 +23,7 @@ function getDownloadUrl(platformClient, contactListId, clientId, tries = 0) {
   apiInstance.getOutboundContactlistExport(contactListId)  
     .then((data) => {
       console.log(`getOutboundContactlistExport success! data: ${JSON.stringify(data, null, 2)}`);
-      console.log('data[0] y data[1] ', data[0],' ',data[1]);
+      console.log('data.uri ', data.uri);
     })
     .catch((err) => {
       console.log("There was a failure calling getOutboundContactlistExport");
