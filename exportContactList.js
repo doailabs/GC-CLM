@@ -1,46 +1,70 @@
 let selectedContactListId;
 let csvData;
 
-function handleContactListSelection(platformClient, contactListId, clientId) {
+async function handleContactListSelection(platformClient, contactListId, clientId) {
   selectedContactListId = contactListId;
-  initiateContactListExport(platformClient, contactListId, clientId);
+  await initiateContactListExport(platformClient, contactListId);
+  await downloadExportedCsv(platformClient, contactListId);
 }
 
-function initiateContactListExport(platformClient, contactListId, clientId) {
+async function initiateContactListExport(platformClient, contactListId) {
   const apiInstance = new platformClient.OutboundApi();
-  apiInstance.postOutboundContactlistExport(contactListId)
-    .then(response => {
-      console.log('Export initiated:', response);
-      setTimeout(() => {
-        downloadExportedCsv(platformClient, contactListId, response.id, clientId);
-      }, 2000);
-    })
-    .catch(error => console.error('Error al iniciar la exportación de la lista de contactos:', error));
+  try {
+    const response = await apiInstance.postOutboundContactlistExport(contactListId);
+    console.log('Export iniciado:', response);
+  } catch (error) {
+    console.error('Error al iniciar la exportación de la lista de contactos:', error);
+    throw error;
+  }
 }
 
-function downloadExportedCsv(platformClient, contactListId, jobId, clientId, tries = 0) {
+async function downloadExportedCsv(platformClient, contactListId, tries = 0) {
   const apiInstance = new platformClient.OutboundApi();
-  let opts = { 
-    "download": "false"
-  };
-  apiInstance.getOutboundContactlistExport(contactListId, opts)
-    .then(response => {
-      console.log('response.uri:', response.uri);
-      return fetch(response.uri, {mode: "no-cors"});
-    })
-    .then(response => {
-      console.log('Trabajo de exportación completado, archivo descargado:', response);
-      csvData = response.body;
-      showContactListRecords(csvData);
-    })
-    .catch(error => {
-      console.error('Error al descargar el CSV de la contact list exportado. Reintentando en 2 segundos...', error);
-      if (tries < 3) {
-        setTimeout(() => {
-          downloadExportedCsv(platformClient, contactListId, jobId, tries + 1);
-        }, 2000);
-      } else {
-        console.error('Error exportando el csv de la contact list. Máximo número de reintentos alcanzado');
-      }
+  let downloadUrl = '';
+  try {
+    const response = await apiInstance.getOutboundContactlistExport(contactListId, {"download": "false"});
+    console.log('Estado de exportación:', response.status);
+    if (response.status === 'COMPLETE') {
+      downloadUrl = response.uri;
+    } else {
+      console.log('Esperando que se complete la exportación...');
+      await new Promise(resolve => setTimeout(resolve, 5000));
+      return downloadExportedCsv(platformClient, contactListId, tries + 1);
+    }
+  } catch (error) {
+    console.error('Error al comprobar el estado de la exportación:', error);
+    if (tries < 3) {
+      console.log(`Reintentando en ${tries + 1} segundos...`);
+      await new Promise(resolve => setTimeout(resolve, (tries + 1) * 1000));
+      return downloadExportedCsv(platformClient, contactListId, tries + 1);
+    } else {
+      throw error;
+    }
+  }
+
+  try {
+    const redirectResponse = await fetch(`${downloadUrl}?issueRedirect=false`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${platformClient.getAuth().getAccessToken()}`
+      },
+      redirect: 'manual'
     });
+    console.log('Respuesta de redirección:', redirectResponse);
+    if (redirectResponse.status === 307) {
+      const redirectUrl = redirectResponse.headers.get('Location');
+      console.log('URL de redirección:', redirectUrl);
+      const response = await fetch(redirectUrl);
+      const responseBody = await response.json();
+      console.log('URL del archivo de exportación:', responseBody.url);
+      csvData = responseBody.url;
+      showContactListRecords(csvData);
+    } else {
+      console.error('Error al obtener la URL de redirección:', redirectResponse);
+      throw new Error('Error al obtener la URL de redirección');
+    }
+  } catch (error) {
+    console.error('Error al descargar el archivo CSV:', error);
+    throw error;
+  }
 }
