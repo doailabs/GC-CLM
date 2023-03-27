@@ -28,7 +28,7 @@ function getDownloadUrl(platformClient, contactListId, clientId, tries = 0) {
       console.log('Download URL retrieved:', response.uri);
       const modifiedUrl = response.uri + '?issueRedirect=false';
       console.log('Modified URL:', modifiedUrl);
-      downloadExportedCsv(platformClient, modifiedUrl, clientId);
+      downloadExportedCsv(modifiedUrl, clientId);
     })
     .catch(error => {
       console.error('Error retrieving download URL. Retrying in 2 seconds...', error);
@@ -42,8 +42,9 @@ function getDownloadUrl(platformClient, contactListId, clientId, tries = 0) {
 });
 }
 
-function downloadExportedCsv(platformClient, modifiedUrl, clientId) {
-  fetch(modifiedUrl, {
+function downloadExportedCsv(modifiedUrl, clientId) {
+  // Use the native fetch function instead of platformClient's fetch to avoid sending auth bearer token, that would cause error in AWS side
+  window.fetch(modifiedUrl, {
     method: 'GET'
   })
   .then(response => response.json())
@@ -56,8 +57,9 @@ function downloadExportedCsv(platformClient, modifiedUrl, clientId) {
     console.log('Export job completed, file downloaded:', response);
     csvData = response.body;
     showContactListRecords(csvData);
-  })
-  .catch(error => {
-    console.error('Error downloading exported CSV:', error);
-  });
+    })
+.catch(error => {
+console.error('Error downloading exported CSV:', error);
+});
 }
+
