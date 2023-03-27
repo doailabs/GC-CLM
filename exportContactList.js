@@ -28,7 +28,7 @@ function getDownloadUrl(platformClient, contactListId, clientId, tries = 0) {
       console.log('Download URL retrieved:', response.uri);
       const modifiedUrl = response.uri + '?issueRedirect=false';
       console.log('Modified URL:', modifiedUrl);
-      downloadExportedCsv(modifiedUrl, clientId);
+      downloadExportedCsv(response.uri, clientId);
     })
     .catch(error => {
       console.error('Error retrieving download URL. Retrying in 2 seconds...', error);
@@ -42,9 +42,9 @@ function getDownloadUrl(platformClient, contactListId, clientId, tries = 0) {
 });
 }
 
-function downloadExportedCsv(modifiedUrl, clientId) {
+function downloadExportedCsv(Url, clientId) {
   // Use the native fetch function instead of platformClient's fetch to avoid sending auth bearer token, that would cause error in AWS side
-  window.fetch(modifiedUrl, {
+  window.fetch(Url, {
     method: 'GET'
   })
   .then(response => response.json())
