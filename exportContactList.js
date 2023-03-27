@@ -28,7 +28,7 @@ function getDownloadUrl(platformClient, contactListId, clientId, tries = 0) {
       console.log('Download URL retrieved:', response.uri);
       const modifiedUrl = response.uri + '?issueRedirect=false';
       console.log('Modified URL:', modifiedUrl);
-      downloadExportedCsv(modifiedUrl, clientId);
+      downloadExportedCsv(modifiedUrl);
     })
     .catch(error => {
       console.error('Error retrieving download URL. Retrying in 2 seconds...', error);
