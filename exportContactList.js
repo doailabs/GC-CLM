@@ -42,30 +42,17 @@ function getDownloadUrl(platformClient, contactListId, clientId, tries = 0) {
 });
 }
 
-async function downloadExportedCsv(exportUrl) {
-  const nativeFetch = window.fetch.bind(window);
+async function downloadExportedCsv(uri) {
+  try {
+    const response = await fetch(uri);
+    if (!response.ok) {
+      throw new Error(`Error al descargar el archivo CSV: ${response.statusText}`);
+    }
 
-  const response = await nativeFetch(exportUrl, {
-    method: 'GET',
-    mode: 'cors',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    },
-  });
-
-  if (response.ok) {
-    const blob = await response.blob();
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'export.csv';
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    window.URL.revokeObjectURL(url);
-  } else {
-    console.error('Error downloading exported CSV:', response.statusText);
+    const csvData = await response.text();
+    showContactListRecords(csvData);
+  } catch (error) {
+    console.error('Ha ocurrido un error:', error);
   }
 }
 
