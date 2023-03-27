@@ -1,72 +1,62 @@
 let selectedContactListId;
 let csvData;
 
-async function handleContactListSelection(platformClient, contactListId, clientId) {
+function handleContactListSelection(platformClient, contactListId, clientId) {
   selectedContactListId = contactListId;
-  await initiateContactListExport(platformClient, contactListId);
-  await downloadExportedCsv(platformClient, contactListId);
+  initiateContactListExport(platformClient, contactListId, clientId);
 }
 
-async function initiateContactListExport(platformClient, contactListId) {
+function initiateContactListExport(platformClient, contactListId, clientId) {
   const apiInstance = new platformClient.OutboundApi();
-  try {
-    const response = await apiInstance.postOutboundContactlistExport(contactListId);
-    console.log('Export iniciado:', response);
-  } catch (error) {
-    console.error('Error al iniciar la exportación de la lista de contactos:', error);
-    throw error;
-  }
+  apiInstance.postOutboundContactlistExport(contactListId)
+    .then(response => {
+      console.log('Export initiated:', response);
+      setTimeout(() => {
+        getDownloadUrl(platformClient, contactListId, clientId);
+      }, 2000);
+    })
+    .catch(error => console.error('Error initiating contact list export:', error));
 }
 
-async function downloadExportedCsv(platformClient, contactListId, tries = 0) {
+function getDownloadUrl(platformClient, contactListId, clientId, tries = 0) {
   const apiInstance = new platformClient.OutboundApi();
-  try {
-    const response = await apiInstance.getOutboundContactlistExport(contactListId, {download: 'false'});
-    console.log('Estado de exportación:', response.status);
-    if (response.status === 'COMPLETE') {
-      const downloadUrl = response.uri + '?issueRedirect=false';
-      console.log('URL de descarga:', downloadUrl);
-      const response2 = await fetch(downloadUrl, {
-        headers: {
-          Authorization: `Bearer ${platformClient.getAuth().getAccessToken()}`
-        }
-      });
-      const responseBody = await response2.json();
-      console.log('URL del archivo de exportación:', responseBody.uri);
-      csvData = responseBody.uri;
-      showContactListRecords(csvData);
-    } else {
-      console.log('Esperando que se complete la exportación...');
-      await new Promise(resolve => setTimeout(resolve, 5000));
-      return downloadExportedCsv(platformClient, contactListId, tries + 1);
-    }
-  } catch (error) {
-    console.error('Error al descargar el archivo CSV:', error);
-    if (tries < 3) {
-      console.log(`Reintentando en ${tries + 1} segundos...`);
-      await new Promise(resolve => setTimeout(resolve, (tries + 1) * 1000));
-      return downloadExportedCsv(platformClient, contactListId, tries + 1);
-    } else {
-      throw error;
-    }
+  let opts = { 
+    "download": "false"
+  };
+  apiInstance.getOutboundContactlistExport(contactListId, opts)
+    .then(response => {
+      console.log('Download URL retrieved:', response.uri);
+      const modifiedUrl = response.uri + '?issueRedirect=false';
+      downloadExportedCsv(platformClient, modifiedUrl, clientId);
+    })
+    .catch(error => {
+      console.error('Error retrieving download URL. Retrying in 2 seconds...', error);
+      if (tries < 3) {
+    setTimeout(() => {
+      getDownloadUrl(platformClient, contactListId, clientId, tries + 1);
+    }, 2000);
+  } else {
+    console.error('Error retrieving download URL. Maximum number of retries reached');
   }
+});
+}
 
-  try {
-    const downloadUrl = csvData + '?issueRedirect=false';
-    console.log('URL de descarga:', downloadUrl);
-    let response3 = null;
-    while (!response3 || response3.status === 404) {
-      console.log('Esperando que esté lista la descarga...');
-      await new Promise(resolve => setTimeout(resolve, 5000));
-      response3 = await fetch(downloadUrl, {
-        headers: {
-          Authorization: `Bearer ${platformClient.getAuth().getAccessToken()}`
-        }
-      });
-    }
-    console.log('Archivo CSV descargado correctamente');
-  } catch (error) {
-    console.error('Error al descargar el archivo CSV:', error);
-    throw error;
-  }
+function downloadExportedCsv(platformClient, modifiedUrl, clientId) {
+  fetch(modifiedUrl, {
+    method: 'GET'
+  })
+  .then(response => response.json())
+  .then(data => {
+    const s3Url = data.url;
+    console.log('S3 URL:', s3Url);
+    return fetch(s3Url); // Removed authorization header
+  })
+  .then(response => {
+    console.log('Export job completed, file downloaded:', response);
+    csvData = response.body;
+    showContactListRecords(csvData);
+  })
+  .catch(error => {
+    console.error('Error downloading exported CSV:', error);
+  });
 }
