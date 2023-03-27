@@ -58,8 +58,8 @@ function downloadExportedCsv(modifiedUrl, clientId) {
     csvData = response.body;
     showContactListRecords(csvData);
     })
-.catch(error => {
-console.error('Error downloading exported CSV:', error);
-});
+  .catch(error => {
+  console.error('Error downloading exported CSV:', error);
+  });
 }
 
