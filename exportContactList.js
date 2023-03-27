@@ -27,6 +27,7 @@ function getDownloadUrl(platformClient, contactListId, clientId, tries = 0) {
     .then(response => {
       console.log('Download URL retrieved:', response.uri);
       const modifiedUrl = response.uri + '?issueRedirect=false';
+      console.log('Modified URL:', modifiedUrl);
       downloadExportedCsv(platformClient, modifiedUrl, clientId);
     })
     .catch(error => {
