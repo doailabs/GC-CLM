@@ -20,23 +20,15 @@ function initiateContactListExport(platformClient, contactListId, clientId) {
 
 function getDownloadUrl(platformClient, contactListId, clientId, tries = 0) {
   const apiInstance = new platformClient.OutboundApi();
-  apiInstance.getOutboundContactlistExport(contactListId)
-    .then(response => {
-      console.log('Download URL retrieved:', response.uri);
-      const modifiedUrl = response.uri + '?issueRedirect=false';
-      console.log('Modified URL:', modifiedUrl);
-      downloadExportedCsv(modifiedUrl);
+  apiInstance.getOutboundContactlistExport(contactListId)  
+    .then((data) => {
+      console.log(`getOutboundContactlistExport success! data: ${JSON.stringify(data, null, 2)}`);
+      console.log('data[0] y data[1] ', data[0],' ',data[1]);
     })
-    .catch(error => {
-      console.error('Error retrieving download URL. Retrying in 2 seconds...', error);
-      if (tries < 3) {
-    setTimeout(() => {
-      getDownloadUrl(platformClient, contactListId, clientId, tries + 1);
-    }, 2000);
-  } else {
-    console.error('Error retrieving download URL. Maximum number of retries reached');
-  }
-});
+    .catch((err) => {
+      console.log("There was a failure calling getOutboundContactlistExport");
+      console.error(err);
+    });
 }
 
 async function downloadExportedCsv(uri) {
