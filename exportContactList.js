@@ -42,24 +42,31 @@ function getDownloadUrl(platformClient, contactListId, clientId, tries = 0) {
 });
 }
 
-function downloadExportedCsv(Url, clientId) {
-  // Use the native fetch function instead of platformClient's fetch to avoid sending auth bearer token, that would cause error in AWS side
-  window.fetch(Url, {
-    method: 'GET'
-  })
-  .then(response => response.json())
-  .then(data => {
-    const s3Url = data.url;
-    console.log('S3 URL:', s3Url);
-    return fetch(s3Url); // Removed authorization header
-  })
-  .then(response => {
-    console.log('Export job completed, file downloaded:', response);
-    csvData = response.body;
-    showContactListRecords(csvData);
-    })
-  .catch(error => {
-  console.error('Error downloading exported CSV:', error);
+async function downloadExportedCsv(exportUrl) {
+  const nativeFetch = window.fetch.bind(window);
+
+  const response = await nativeFetch(exportUrl, {
+    method: 'GET',
+    mode: 'cors',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
   });
+
+  if (response.ok) {
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'export.csv';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    window.URL.revokeObjectURL(url);
+  } else {
+    console.error('Error downloading exported CSV:', response.statusText);
+  }
 }
+
 
