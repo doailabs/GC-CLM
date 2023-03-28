@@ -15,15 +15,18 @@ function initiateContactListExport(platformClient, contactListId, clientId) {
         getDownloadUrl(platformClient, contactListId, clientId);
       }, 2000);
     })
-    .catch(error => console.error('Error initiating contact list export:', error));
+    .catch(error => console.error('Error iniciando contact list export:', error));
 }
 
 function getDownloadUrl(platformClient, contactListId, clientId, tries = 0) {
   const apiInstance = new platformClient.OutboundApi();
-  apiInstance.getOutboundContactlistExport(contactListId)  
+  let opts = { 
+  "download": "false" //Redirect a download uri
+  };
+  apiInstance.getOutboundContactlistExport(contactListId, opts)  
     .then((data) => {
       console.log(`getOutboundContactlistExport success! data: ${JSON.stringify(data, null, 2)}`);
-      console.log('Download URL retrieved:', data.uri);
+      console.log('Download URL recuperada:', data.uri);
       const modifiedUrl = data.uri + '?issueRedirect=false';
       console.log('Modified URL:', modifiedUrl);
       downloadExportedCsv(modifiedUrl);
