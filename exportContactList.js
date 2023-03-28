@@ -21,21 +21,38 @@ function initiateContactListExport(platformClient, contactListId, clientId) {
 function getDownloadUrl(platformClient, contactListId, clientId, tries = 0) {
   const apiInstance = new platformClient.OutboundApi();
   let opts = { 
-  "download": "true"
+    "download": "true"
   };
-  apiInstance.getOutboundContactlistExport(contactListId, opts)  
+  apiInstance.getOutboundContactlistExport(contactListId, opts)
     .then((data) => {
       console.log(`getOutboundContactlistExport success! data: ${JSON.stringify(data, null, 2)}`);
       console.log('Download URL recuperada:', data.uri);
-      const modifiedUrl = data.uri + '?issueRedirect=true';
-      console.log('Modified URL:', modifiedUrl);
-      downloadExportedCsv(modifiedUrl);
+
+      // Extraer el downloadID de la URL
+      const downloadId = data.uri.split('/').pop();
+
+      // Realizar la siguiente llamada a la API
+      getFinalDownloadUrl(platformClient, downloadId);
     })
     .catch((err) => {
       console.log("Ha habido un fallo recuperando la URL de exportación");
       console.error(err);
     });
 }
+
+async function getFinalDownloadUrl(platformClient, downloadId) {
+  const apiInstance = new platformClient.DownloadsApi();
+  const issueRedirect = false;
+  
+  try {
+    const data = await apiInstance.getDownload(downloadId, { issueRedirect });
+    console.log('Final download URL:', data.uri);
+    downloadExportedCsv(data.uri);
+  } catch (err) {
+    console.error('Error al obtener la URL de descarga final:', err);
+  }
+}
+
 
 async function downloadExportedCsv(uri) {
   try {
