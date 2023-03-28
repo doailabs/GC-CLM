@@ -21,13 +21,13 @@ function initiateContactListExport(platformClient, contactListId, clientId) {
 function getDownloadUrl(platformClient, contactListId, clientId, tries = 0) {
   const apiInstance = new platformClient.OutboundApi();
   let opts = { 
-  "download": "false" //Redirect a download uri
+  "download": "true" //Redirect a download uri
   };
   apiInstance.getOutboundContactlistExport(contactListId, opts)  
     .then((data) => {
       console.log(`getOutboundContactlistExport success! data: ${JSON.stringify(data, null, 2)}`);
       console.log('Download URL recuperada:', data.uri);
-      const modifiedUrl = data.uri + '?issueRedirect=false';
+      const modifiedUrl = data.uri + '?issueRedirect=true';
       console.log('Modified URL:', modifiedUrl);
       downloadExportedCsv(modifiedUrl);
     })
