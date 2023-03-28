@@ -37,14 +37,18 @@ function getDownloadUrl(platformClient, contactListId, clientId, tries = 0) {
     });
 }
 
-async function getFinalDownloadUrl(platformClient, downloadId) {
-  const apiInstance = new platformClient.DownloadsApi();
+async function getFinalDownloadUrl(downloadId) {
+  const url = `https://api.mypurecloud.de/api/v2/downloads/${downloadId}`;
   let opts = { 
-    "issueRedirect": true,  
-    "redirectToAuth": true 
+    "issueRedirect": false,  
+    "redirectToAuth": false 
   };
   try {
-    const data = await apiInstance.getDownload(downloadId, opts);
+    const response = await fetch(url, opts);
+    if (!response.ok) {
+      throw new Error(`Error al obtener la URL de descarga final: ${response.statusText}`);
+    }
+    const data = await response.json();
     console.log(`getDownload success! data: ${JSON.stringify(data, null, 2)}`);
     console.log('Final download URL:', data.uri);
     downloadExportedCsv(data.uri);
@@ -53,6 +57,7 @@ async function getFinalDownloadUrl(platformClient, downloadId) {
     console.error(err);
   }
 }
+
 
 
 async function downloadExportedCsv(uri) {
