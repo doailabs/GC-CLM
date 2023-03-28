@@ -39,9 +39,8 @@ function getDownloadUrl(platformClient, contactListId, clientId, tries = 0) {
 
 async function getFinalDownloadUrl(platformClient, downloadId) {
   const apiInstance = new platformClient.DownloadsApi();
-  const issueRedirect = false;
   let opts = { 
-  "issueRedirect": false,  
+  "issueRedirect": true,  
   "redirectToAuth": true 
 };
   
