@@ -42,7 +42,7 @@ async function getFinalDownloadUrl(platformClient, downloadId) {
   const issueRedirect = false;
   let opts = { 
   "issueRedirect": false,  
-  "redirectToAuth": false 
+  "redirectToAuth": true 
 };
   
   try {
