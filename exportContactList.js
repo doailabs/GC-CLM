@@ -21,7 +21,7 @@ function initiateContactListExport(platformClient, contactListId, clientId) {
 function getDownloadUrl(platformClient, contactListId, clientId, tries = 0) {
   const apiInstance = new platformClient.OutboundApi();
   let opts = { 
-  "download": "true" //Redirect a download uri
+  "download": "true"
   };
   apiInstance.getOutboundContactlistExport(contactListId, opts)  
     .then((data) => {
