@@ -40,16 +40,17 @@ function getDownloadUrl(platformClient, contactListId, clientId, tries = 0) {
 async function getFinalDownloadUrl(platformClient, downloadId) {
   const apiInstance = new platformClient.DownloadsApi();
   let opts = { 
-  "issueRedirect": true,  
-  "redirectToAuth": true 
-};
-  
+    "issueRedirect": true,  
+    "redirectToAuth": true 
+  };
   try {
     const data = await apiInstance.getDownload(downloadId, opts);
+    console.log(`getDownload success! data: ${JSON.stringify(data, null, 2)}`);
     console.log('Final download URL:', data.uri);
     downloadExportedCsv(data.uri);
   } catch (err) {
-    console.error('Error al obtener la URL de descarga final:', err);
+    console.log("Error al obtener la URL de descarga final:");
+    console.error(err);
   }
 }
 
