@@ -29,7 +29,7 @@ function getDownloadUrl(platformClient, contactListId, clientId, tries = 0) {
       const downloadId = data.uri.split('/').pop();
 
       // Realizar la siguiente llamada a la API
-      getFinalDownloadUrl(platformClient, downloadId);
+      getFinalDownloadUrl(downloadId);
     })
     .catch((err) => {
       console.log("Ha habido un fallo recuperando la URL de exportación");
