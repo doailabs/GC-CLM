@@ -39,12 +39,8 @@ function getDownloadUrl(platformClient, contactListId, clientId, tries = 0) {
 
 async function getFinalDownloadUrl(downloadId) {
   const url = `https://api.mypurecloud.de/api/v2/downloads/${downloadId}`;
-  let opts = { 
-    "issueRedirect": false,  
-    "redirectToAuth": false 
-  };
   try {
-    const response = await fetch(url, opts);
+    const response = await fetch(url);
     if (!response.ok) {
       throw new Error(`Error al obtener la URL de descarga final: ${response.statusText}`);
     }
